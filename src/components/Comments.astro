@@ -54,11 +54,15 @@ const giscusMapping = giscus.mapping === 'pathname' ? 'specific' : giscus.mappin
   )
 }
 
-<script>
-  import { mountGiscusComments } from '../scripts/giscus-comments';
+{
+  canRenderGiscus && (
+    <script>
+      import { mountGiscusComments } from '../scripts/giscus-comments';
 
-  mountGiscusComments();
-</script>
+      mountGiscusComments();
+    </script>
+  )
+}
 
 <style>
 .comments-section {
@@ -72,20 +76,31 @@ const giscusMapping = giscus.mapping === 'pathname' ? 'specific' : giscus.mappin
   margin: 0 0 var(--space-4);
   color: var(--label-tertiary);
   font-size: var(--text-caption-1);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-accent-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .giscus {
-  --giscus-unmeasured-height: min(104rem, 220vh);
+  --giscus-unmeasured-height: clamp(14rem, 34vh, 18rem);
 
-  min-height: 80px;
+  min-height: var(--giscus-unmeasured-height);
 }
 
 .giscus :global(iframe.giscus-frame) {
   display: block;
   width: 100%;
+  opacity: 1;
+  transition: opacity 90ms var(--ease-out);
+}
+
+.giscus.is-ready :global(iframe.giscus-frame) {
+  opacity: 1 !important;
+}
+
+.giscus.is-loading:not(.is-ready) :global(iframe.giscus-frame) {
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 .giscus:not(.is-resized) :global(iframe.giscus-frame) {
