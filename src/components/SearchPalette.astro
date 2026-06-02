@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
 
-const posts = (await getCollection('blog'))
+const posts = (await getCollection('posts'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -11,7 +11,7 @@ const items = posts.map((post) => ({
   title: post.data.title,
   description: post.data.description,
   category: post.data.category ?? 'Post',
-  href: withBase(`/blog/${post.id}/`),
+  href: withBase(`/posts/${post.id}/`),
 }));
 ---
 
@@ -29,7 +29,11 @@ const items = posts.map((post) => ({
         autocomplete="off"
         aria-label="Search posts"
       />
-      <kbd>Esc</kbd>
+      <button class="search-palette-close" type="button" data-search-palette-close aria-label="Close search">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M5 5l10 10M15 5 5 15"></path>
+        </svg>
+      </button>
     </div>
 
     <div class="search-palette-results" data-search-palette-results></div>
@@ -101,6 +105,7 @@ const items = posts.map((post) => ({
 .search-palette-field input {
   width: 100%;
   border: 0;
+  appearance: textfield;
   outline: 0;
   background: transparent;
   color: var(--label-primary);
@@ -113,15 +118,43 @@ const items = posts.map((post) => ({
   color: var(--label-tertiary);
 }
 
-.search-palette-field kbd {
-  min-width: 2rem;
-  padding: 0.18rem 0.42rem;
-  border: 1px solid var(--separator);
-  border-radius: var(--radius-sm);
+.search-palette-field input::-webkit-search-cancel-button,
+.search-palette-field input::-webkit-search-decoration {
+  width: 0;
+  height: 0;
+  display: none;
+  -webkit-appearance: none;
+}
+
+.search-palette-close {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
   color: var(--label-tertiary);
-  font-size: var(--text-caption-1);
-  font-family: var(--font-sans);
-  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.search-palette-close:hover,
+.search-palette-close:focus-visible {
+  background: var(--fill-tertiary);
+  color: var(--label-primary);
+}
+
+.search-palette-close svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.35;
+  stroke-linecap: round;
 }
 
 .search-palette-results {
@@ -173,7 +206,7 @@ const items = posts.map((post) => ({
 .search-palette-results :global(.search-palette-item-meta) {
   color: var(--color-blue);
   font-size: var(--text-caption-1);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-accent-label);
   white-space: nowrap;
 }
 

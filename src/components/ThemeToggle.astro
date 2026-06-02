@@ -38,6 +38,11 @@
 
       syncAriaPressed(root.getAttribute('data-theme') === 'dark');
 
+      const observer = new MutationObserver(() => {
+        syncAriaPressed(root.getAttribute('data-theme') === 'dark');
+      });
+      observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
       btn.addEventListener('click', () => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);

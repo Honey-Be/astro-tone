@@ -22,6 +22,15 @@ function initScrollDark(prose: HTMLElement) {
   let effectThemeWrites = 0;
   const enterAt = 0.2;
   const exitAt = 0.13;
+  const navOffset = 52;
+  const triggerEnterViewportRatio = 0.5;
+  const triggerExitViewportRatio = 0.42;
+  const triggerHeading = prose.querySelector<HTMLElement>('#scroll-dark-turns-on-here');
+  let articleTop = 0;
+  let proseHeight = 1;
+  let triggerTop = 0;
+  let triggerBottom = 0;
+  let scrollFrame = 0;
   const hasUserChangedTheme = () => {
     if (userThemeOverride) return true;
     try {
@@ -56,31 +65,56 @@ function initScrollDark(prose: HTMLElement) {
   });
   observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
+  function measure() {
+    articleTop = prose.getBoundingClientRect().top + window.scrollY;
+    proseHeight = Math.max(prose.scrollHeight, 1);
+    if (triggerHeading) {
+      const triggerRect = triggerHeading.getBoundingClientRect();
+      triggerTop = triggerRect.top + window.scrollY;
+      triggerBottom = triggerTop + triggerHeading.offsetHeight;
+    }
+  }
+
   function update() {
+    scrollFrame = 0;
     if (hasUserChangedTheme()) {
       darkActive = false;
       return;
     }
 
-    const articleTop = prose.getBoundingClientRect().top + window.scrollY;
-    const readerTop = window.scrollY + 52;
-    const pct = Math.min(
-      Math.max((readerTop - articleTop) / Math.max(prose.scrollHeight, 1), 0),
-      1
-    );
+    const readerTop = window.scrollY + navOffset;
+    const triggerEnterLine = window.scrollY + window.innerHeight * triggerEnterViewportRatio;
+    const triggerExitLine = window.scrollY + window.innerHeight * triggerExitViewportRatio;
+    const pct = Math.min(Math.max((readerTop - articleTop) / proseHeight, 0), 1);
+    const shouldEnter = triggerHeading ? triggerEnterLine >= triggerBottom : pct >= enterAt;
+    const shouldExit = triggerHeading ? triggerExitLine <= triggerTop : pct <= exitAt;
 
-    if (pct >= enterAt && root.getAttribute('data-theme') !== 'dark') {
+    if (shouldEnter && root.getAttribute('data-theme') !== 'dark') {
       darkActive = true;
       setThemeFromEffect('dark');
-    } else if (pct <= exitAt && darkActive) {
+    } else if (shouldExit && darkActive) {
       darkActive = false;
       restoreTheme();
     }
   }
 
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update, { passive: true });
-  setTimeout(update, 60);
+  function requestUpdate() {
+    if (scrollFrame) return;
+    scrollFrame = window.requestAnimationFrame(update);
+  }
+
+  function refresh() {
+    measure();
+    requestUpdate();
+  }
+
+  const resizeObserver = new ResizeObserver(refresh);
+  resizeObserver.observe(prose);
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', refresh, { passive: true });
+  measure();
+  setTimeout(refresh, 60);
   update();
 }
 
