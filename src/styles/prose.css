@@ -13,7 +13,7 @@
   --prose-mark-bg: color-mix(in srgb, var(--color-blue) 22%, transparent);
   --prose-mark-fg: var(--label-primary);
 
-  font-size: clamp(1.0313rem, 1rem + 0.12vw, 1.0625rem);
+  font-size: clamp(1rem, 0.99rem + 0.04vw, 1.0156rem);
   line-height: 1.76;
   color: var(--label-primary);
 }

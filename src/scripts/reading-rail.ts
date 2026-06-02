@@ -24,7 +24,7 @@ export function initReadingRail() {
       afterBoundary: 'viewport-end',
       afterOffset: 120,
     },
-    minWidth: 1120,
+    minWidth: 1220,
     topOffset: 52,
   });
 }

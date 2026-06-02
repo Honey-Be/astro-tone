@@ -1,6 +1,6 @@
 import { mountReadingRailForPosts } from './reading-rail';
 
-const railQuery = '(min-width: 1120px)';
+const railQuery = '(min-width: 1220px)';
 let mounted = false;
 let listening = false;
 const railMediaQuery = window.matchMedia(railQuery);
