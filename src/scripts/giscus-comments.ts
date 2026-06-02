@@ -3,19 +3,23 @@ import { onReady } from './mount';
 const GISCUS_ORIGIN = 'https://giscus.app';
 const GISCUS_CLIENT_SRC = `${GISCUS_ORIGIN}/client.js`;
 const GISCUS_CUSTOM_THEME_HEIGHT_BUFFER = 40;
-const GISCUS_LOAD_ROOT_MARGIN = '1600px 0px';
-const GISCUS_IDLE_LOAD_DELAY = 0;
-const GISCUS_IDLE_LOAD_TIMEOUT = 1800;
+const GISCUS_LOAD_ROOT_MARGIN = '3400px 0px';
 const GISCUS_REVEAL_MIN_HEIGHT = 500;
 const GISCUS_REVEAL_STABILIZE_DELAY = 180;
 const GISCUS_REVEAL_FALLBACK_DELAY = 3600;
+const GISCUS_THEME_SYNC_DELAYS = [0, 200, 600, 1200, 2400] as const;
+const GISCUS_THEME_WATCHDOG_INTERVAL = 500;
+const GISCUS_THEME_WATCHDOG_DURATION = 12000;
 const themeCache = new Map<string, string>();
 let themeObserver: MutationObserver | null = null;
 let resizeMessageListenerMounted = false;
 let lastGiscusResizeHeight: number | null = null;
 let giscusLoadObserver: IntersectionObserver | null = null;
-let giscusRevealTimer: number | null = null;
-let giscusRevealTimerKind: 'fallback' | 'measured' | null = null;
+let giscusFallbackRevealTimer: number | null = null;
+let giscusMeasuredRevealTimer: number | null = null;
+let giscusThemeSyncFrame = 0;
+let giscusThemeWatchdogTimer: number | null = null;
+let themeSyncEventsMounted = false;
 
 const safeGetItem = (key: string): string | null => {
   try {
@@ -35,6 +39,14 @@ const isDarkTheme = (): boolean => {
   if (stored === 'light') return false;
 
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
+};
+
+const getGiscusThemeVariant = (container: HTMLElement): string => {
+  if (container.dataset.themeMode !== 'custom') {
+    return container.dataset.theme || 'preferred_color_scheme';
+  }
+
+  return isDarkTheme() ? 'custom-dark' : 'custom-light';
 };
 
 const resolveGiscusTheme = async (container: HTMLElement): Promise<string> => {
@@ -75,49 +87,7 @@ const setDataAttribute = (
   if (value) script.setAttribute(name, value);
 };
 
-const revealGiscus = (container: HTMLElement): void => {
-  container.classList.add('is-ready');
-  container.classList.remove('is-loading');
-};
-
-const scheduleGiscusReveal = (
-  container: HTMLElement,
-  delay: number,
-  options: { kind?: 'fallback' | 'measured'; requireMeasuredHeight?: boolean } = {},
-): void => {
-  if (giscusRevealTimer !== null) window.clearTimeout(giscusRevealTimer);
-  giscusRevealTimerKind = options.kind || 'measured';
-  giscusRevealTimer = window.setTimeout(() => {
-    giscusRevealTimer = null;
-    giscusRevealTimerKind = null;
-    if (container.dataset.giscusLoaded !== 'true') return;
-    if (options.requireMeasuredHeight) {
-      const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-      if (!iframe || iframe.getBoundingClientRect().height < GISCUS_REVEAL_MIN_HEIGHT) return;
-    }
-    revealGiscus(container);
-  }, delay);
-};
-
-const scheduleIdleLoad = (load: () => void): void => {
-  const idleCallback = window.requestIdleCallback;
-  window.setTimeout(() => {
-    if (idleCallback) {
-      idleCallback(load, { timeout: GISCUS_IDLE_LOAD_TIMEOUT });
-      return;
-    }
-    load();
-  }, GISCUS_IDLE_LOAD_DELAY);
-};
-
-const appendGiscusClient = async (container: HTMLElement): Promise<void> => {
-  const theme = await resolveGiscusTheme(container);
-  if (giscusRevealTimer !== null) window.clearTimeout(giscusRevealTimer);
-  giscusRevealTimer = null;
-  container.classList.remove('is-ready', 'is-resized');
-  container.classList.add('is-loading');
-  container.innerHTML = '';
-
+const createGiscusClientScript = (container: HTMLElement, theme: string): HTMLScriptElement => {
   const script = document.createElement('script');
   script.src = GISCUS_CLIENT_SRC;
   script.async = true;
@@ -137,9 +107,100 @@ const appendGiscusClient = async (container: HTMLElement): Promise<void> => {
   setDataAttribute(script, 'data-loading', container.dataset.loading || 'eager');
   setDataAttribute(script, 'data-theme', theme);
 
-  container.appendChild(script);
+  return script;
+};
+
+const revealGiscus = (container: HTMLElement): void => {
+  container.classList.add('is-ready');
+  container.classList.remove('is-loading');
+};
+
+const clearGiscusMeasuredReveal = (): void => {
+  if (giscusMeasuredRevealTimer === null) return;
+  window.clearTimeout(giscusMeasuredRevealTimer);
+  giscusMeasuredRevealTimer = null;
+};
+
+const clearGiscusRevealTimers = (): void => {
+  if (giscusFallbackRevealTimer !== null) {
+    window.clearTimeout(giscusFallbackRevealTimer);
+    giscusFallbackRevealTimer = null;
+  }
+  clearGiscusMeasuredReveal();
+};
+
+const scheduleGiscusReveal = (
+  container: HTMLElement,
+  delay: number,
+  options: { kind?: 'fallback' | 'measured'; requireMeasuredHeight?: boolean } = {},
+): void => {
+  const kind = options.kind || 'measured';
+  if (kind === 'fallback' && giscusFallbackRevealTimer !== null) {
+    window.clearTimeout(giscusFallbackRevealTimer);
+  }
+  if (kind === 'measured') clearGiscusMeasuredReveal();
+
+  const timer = window.setTimeout(() => {
+    if (kind === 'fallback') {
+      giscusFallbackRevealTimer = null;
+    } else {
+      giscusMeasuredRevealTimer = null;
+    }
+    if (container.dataset.giscusLoaded !== 'true') return;
+    if (options.requireMeasuredHeight) {
+      const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+      if (!iframe || iframe.getBoundingClientRect().height < GISCUS_REVEAL_MIN_HEIGHT) return;
+    }
+    revealGiscus(container);
+  }, delay);
+
+  if (kind === 'fallback') {
+    giscusFallbackRevealTimer = timer;
+  } else {
+    giscusMeasuredRevealTimer = timer;
+  }
+};
+
+const appendGiscusClient = async (container: HTMLElement): Promise<void> => {
+  const themeVariant = getGiscusThemeVariant(container);
+  const theme = await resolveGiscusTheme(container);
+  clearGiscusRevealTimers();
+  container.classList.remove('is-ready', 'is-resized');
+  container.classList.add('is-loading');
+  container.dataset.giscusAppliedTheme = themeVariant;
+  container.innerHTML = '';
+
+  container.appendChild(createGiscusClientScript(container, theme));
 
   scheduleGiscusReveal(container, GISCUS_REVEAL_FALLBACK_DELAY, { kind: 'fallback' });
+  scheduleGiscusThemeSync(container);
+};
+
+const reloadLocalCustomGiscusTheme = async (
+  container: HTMLElement,
+  iframe: HTMLIFrameElement,
+  themeVariant: string,
+): Promise<void> => {
+  const theme = await resolveGiscusTheme(container);
+  const iframeHeight = Math.max(
+    iframe.getBoundingClientRect().height,
+    lastGiscusResizeHeight || 0,
+    GISCUS_REVEAL_MIN_HEIGHT
+  );
+  const url = new URL(iframe.src);
+
+  url.searchParams.set('theme', theme);
+  iframe.style.height = `${Math.ceil(iframeHeight + GISCUS_CUSTOM_THEME_HEIGHT_BUFFER)}px`;
+  container.style.minHeight = `${Math.ceil(iframeHeight + GISCUS_CUSTOM_THEME_HEIGHT_BUFFER)}px`;
+  container.dataset.giscusAppliedTheme = themeVariant;
+  container.classList.add('is-ready', 'is-resized');
+  container.classList.remove('is-loading');
+  iframe.src = url.toString();
+
+  window.setTimeout(() => {
+    if (container.dataset.giscusAppliedTheme !== themeVariant) return;
+    container.style.removeProperty('min-height');
+  }, GISCUS_REVEAL_FALLBACK_DELAY);
 };
 
 const mountResizeMessageListener = (): void => {
@@ -163,10 +224,8 @@ const mountResizeMessageListener = (): void => {
         kind: 'measured',
         requireMeasuredHeight: true,
       });
-    } else if (resizeHeight < GISCUS_REVEAL_MIN_HEIGHT && giscusRevealTimerKind === 'measured') {
-      if (giscusRevealTimer !== null) window.clearTimeout(giscusRevealTimer);
-      giscusRevealTimer = null;
-      giscusRevealTimerKind = null;
+    } else if (resizeHeight < GISCUS_REVEAL_MIN_HEIGHT) {
+      clearGiscusMeasuredReveal();
     }
   };
 
@@ -192,48 +251,36 @@ const mountResizeMessageListener = (): void => {
           kind: 'measured',
           requireMeasuredHeight: true,
         });
-      } else if (giscusRevealTimerKind === 'measured' && giscusRevealTimer !== null) {
-        window.clearTimeout(giscusRevealTimer);
-        giscusRevealTimer = null;
-        giscusRevealTimerKind = null;
+      } else {
+        clearGiscusMeasuredReveal();
       }
+      void updateGiscusTheme(container);
     }
     scheduleMeasuredHeight(resizeHeight);
   });
-};
-
-const isGiscusFrameReady = (iframe: HTMLIFrameElement): boolean => {
-  if (!iframe.src.startsWith(GISCUS_ORIGIN)) return false;
-  try {
-    // While the iframe is still about:blank it is same-origin and target-origin postMessage logs
-    // in Firefox/WebKit. Once giscus has loaded, reading location is blocked by cross-origin.
-    void iframe.contentWindow?.location.href;
-    return false;
-  } catch {
-    return true;
-  }
 };
 
 const updateGiscusTheme = async (container: HTMLElement): Promise<void> => {
   const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
   if (!iframe?.contentWindow) return;
 
-  const theme = await resolveGiscusTheme(container);
-  const postTheme = (attempt = 0) => {
-    const giscusIframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-    if (!giscusIframe?.contentWindow) return;
-    if (!isGiscusFrameReady(giscusIframe)) {
-      if (attempt < 8) window.setTimeout(() => postTheme(attempt + 1), 250);
-      return;
-    }
-    try {
-      giscusIframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, GISCUS_ORIGIN);
-    } catch {
-      if (attempt < 3) window.setTimeout(() => postTheme(attempt + 1), 350);
-    }
-  };
+  const themeVariant = getGiscusThemeVariant(container);
+  const usesLocalCustomTheme = container.dataset.themeMode === 'custom' && window.location.protocol !== 'https:';
+  if (usesLocalCustomTheme) {
+    if (container.dataset.giscusAppliedTheme === themeVariant) return;
+    void reloadLocalCustomGiscusTheme(container, iframe, themeVariant);
+    return;
+  }
 
-  postTheme();
+  if (container.dataset.giscusAppliedTheme === themeVariant) return;
+
+  const theme = await resolveGiscusTheme(container);
+  try {
+    iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, GISCUS_ORIGIN);
+    container.dataset.giscusAppliedTheme = themeVariant;
+  } catch {
+    return;
+  }
 
   if (lastGiscusResizeHeight !== null) {
     const resizeHeight = lastGiscusResizeHeight;
@@ -245,6 +292,45 @@ const updateGiscusTheme = async (container: HTMLElement): Promise<void> => {
   }
 };
 
+const requestGiscusThemeSync = (container: HTMLElement): void => {
+  if (giscusThemeSyncFrame) return;
+  giscusThemeSyncFrame = window.requestAnimationFrame(() => {
+    giscusThemeSyncFrame = 0;
+    void updateGiscusTheme(container);
+  });
+};
+
+const scheduleGiscusThemeSync = (container: HTMLElement): void => {
+  GISCUS_THEME_SYNC_DELAYS.forEach((delay) => {
+    window.setTimeout(() => {
+      void updateGiscusTheme(container);
+    }, delay);
+  });
+};
+
+const mountThemeSyncEvents = (container: HTMLElement): void => {
+  if (themeSyncEventsMounted) return;
+  themeSyncEventsMounted = true;
+  window.addEventListener('scroll', () => requestGiscusThemeSync(container), { passive: true });
+  window.addEventListener('resize', () => requestGiscusThemeSync(container), { passive: true });
+};
+
+const startGiscusThemeWatchdog = (container: HTMLElement): void => {
+  if (giscusThemeWatchdogTimer !== null) {
+    window.clearInterval(giscusThemeWatchdogTimer);
+  }
+
+  const startedAt = Date.now();
+  giscusThemeWatchdogTimer = window.setInterval(() => {
+    requestGiscusThemeSync(container);
+    if (Date.now() - startedAt < GISCUS_THEME_WATCHDOG_DURATION) return;
+    if (giscusThemeWatchdogTimer !== null) {
+      window.clearInterval(giscusThemeWatchdogTimer);
+      giscusThemeWatchdogTimer = null;
+    }
+  }, GISCUS_THEME_WATCHDOG_INTERVAL);
+};
+
 export const mountGiscusComments = (): void => {
   onReady(() => {
     const container = document.getElementById('giscus-container');
@@ -253,15 +339,17 @@ export const mountGiscusComments = (): void => {
     container.dataset.giscusReady = 'true';
 
     mountResizeMessageListener();
+    mountThemeSyncEvents(container);
 
     const load = () => {
       if (container.dataset.giscusLoaded === 'true') return;
       container.dataset.giscusLoaded = 'true';
       void appendGiscusClient(container);
+      startGiscusThemeWatchdog(container);
 
       themeObserver?.disconnect();
       themeObserver = new MutationObserver(() => {
-        void updateGiscusTheme(container);
+        scheduleGiscusThemeSync(container);
       });
       themeObserver.observe(document.documentElement, {
         attributes: true,
@@ -281,7 +369,6 @@ export const mountGiscusComments = (): void => {
         { rootMargin: GISCUS_LOAD_ROOT_MARGIN }
       );
       giscusLoadObserver.observe(container);
-      scheduleIdleLoad(load);
       return;
     }
 
