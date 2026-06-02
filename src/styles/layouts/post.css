@@ -1,6 +1,6 @@
-@import url('toc-rail/style.css');
-
 .post-main {
+  --post-meta-size: var(--text-footnote);
+
   max-width: var(--max-width-wide);
   margin: 0 auto;
   padding: var(--space-20) var(--space-6) var(--space-24);
@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-footnote);
+  font-size: var(--post-meta-size);
   color: var(--label-tertiary);
   margin-bottom: var(--space-5);
 }
@@ -66,10 +66,10 @@
 }
 
 .post-title {
-  font-size: clamp(2.2rem, 5vw, 3.25rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.06;
+  font-size: 2.5rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
   margin: 0 0 var(--space-5);
   color: var(--label-primary);
   /* Subtle weight contrast via text-shadow trick */
@@ -80,7 +80,7 @@
   font-size: var(--text-callout);
   color: var(--label-secondary);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.64;
   margin: 0;
   max-width: 520px;
   border-left: 2px solid var(--separator);
@@ -112,7 +112,7 @@
 
 .related-label {
   font-size: var(--text-caption-1);
-  font-weight: 600;
+  font-weight: var(--weight-accent-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--label-tertiary);
@@ -121,7 +121,7 @@
 
 .related-view-all {
   font-size: var(--text-footnote);
-  font-weight: 600;
+  font-weight: var(--weight-accent-label);
   color: var(--color-blue);
   text-decoration: none;
   transition: text-shadow var(--duration-fast) var(--ease-out);
@@ -170,9 +170,20 @@
   }
 }
 
+/* ── Tablet ─────────────────────────────── */
+@media (max-width: 900px) {
+  .post-title {
+    font-size: 2.25rem;
+  }
+}
+
 /* ── Mobile ─────────────────────────────── */
 @media (max-width: 600px) {
   .post-main {
     padding: var(--space-12) var(--space-4) var(--space-16);
+  }
+
+  .post-title {
+    font-size: 2.08rem;
   }
 }

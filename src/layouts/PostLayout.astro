@@ -1,5 +1,6 @@
 ---
-import '../styles/layouts/blog-post.css';
+import 'toc-rail/style.css';
+import '../styles/layouts/post.css';
 import type { CollectionEntry } from 'astro:content';
 import Comments from '../components/Comments.astro';
 import FeaturedPostGrid from '../components/FeaturedPostGrid.astro';
@@ -12,9 +13,9 @@ import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
 
-type Props = CollectionEntry<'blog'>['data'] & {
+type Props = CollectionEntry<'posts'>['data'] & {
   readingTime?: number;
-  relatedPosts?: CollectionEntry<'blog'>[];
+  relatedPosts?: CollectionEntry<'posts'>[];
 };
 
 const {
@@ -29,7 +30,7 @@ const {
 } = Astro.props;
 
 const tr = getUiText();
-const blogBase = withBase('/blog');
+const postsBase = withBase('/posts');
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pubDateISO = pubDate.toISOString();
@@ -67,7 +68,7 @@ const jsonLd = serializeScriptJson({
 
   <main id="main-content" class="post-main">
     <article data-pagefind-body>
-      <a href={blogBase} class="back-link">{tr.backLink}</a>
+      <a href={postsBase} class="back-link">{tr.backLink}</a>
 
       <header class="post-header">
         <div class="post-accent"></div>
@@ -107,7 +108,7 @@ const jsonLd = serializeScriptJson({
           <section class="related-section" data-pagefind-ignore="all">
             <div class="related-header">
               <p class="related-label">{tr.relatedPosts}</p>
-              <a href={blogBase} class="related-view-all">
+              <a href={postsBase} class="related-view-all">
                 {tr.allPosts}
               </a>
             </div>

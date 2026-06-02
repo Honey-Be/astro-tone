@@ -102,14 +102,14 @@ Always add the language. Highlighting is provided by `astro-expressive-code` wit
 
 ````markdown
 ```ts
-const site = { title: 'Astro Tone' };
+const site = { title: 'Tone' };
 ```
 ````
 
 Renders as:
 
 ```ts
-const site = { title: 'Astro Tone' };
+const site = { title: 'Tone' };
 ```
 
 Terminal:

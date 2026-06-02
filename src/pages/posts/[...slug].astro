@@ -1,10 +1,10 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import readingTimeLib from 'reading-time';
-import BlogPost from '../../layouts/BlogPost.astro';
+import PostLayout from '../../layouts/PostLayout.astro';
 
 export async function getStaticPaths() {
-  const allPosts = (await getCollection('blog'))
+  const allPosts = (await getCollection('posts'))
     .filter((p) => !p.data.draft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -29,8 +29,8 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  post: CollectionEntry<'blog'>;
-  relatedPosts: CollectionEntry<'blog'>[];
+  post: CollectionEntry<'posts'>;
+  relatedPosts: CollectionEntry<'posts'>[];
 }
 
 const { post, relatedPosts } = Astro.props;
@@ -39,11 +39,11 @@ const { Content } = await render(post);
 const readingTime = Math.max(1, Math.round(readingTimeLib(post.body ?? '').minutes));
 ---
 
-<BlogPost
+<PostLayout
   {...post.data}
   readingTime={readingTime}
   focusEffect={post.data.focusEffect}
   relatedPosts={relatedPosts}
 >
   <Content />
-</BlogPost>
+</PostLayout>
