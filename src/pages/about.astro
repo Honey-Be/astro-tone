@@ -15,7 +15,6 @@ const statementLabel = config.about.statementLabel;
 const statementTitle = config.about.statementTitle;
 const statement = config.about.statement;
 const careerLabel = config.about.careerLabel;
-const careerHeading = config.about.careerHeading;
 const careerItems = config.about.career;
 const focusItems = config.about.interests;
 const interestsLabel = config.about.interestsLabel;
@@ -116,10 +115,9 @@ const profileLinks = [
       </div>
     </section>
 
-    <section class="about-section" aria-labelledby="about-career">
+    <section class="about-section" aria-label={careerLabel}>
       <p class="section-label">{careerLabel}</p>
       <div class="career-list">
-        <h2 id="about-career" class="sr-only">{careerHeading}</h2>
         {
           careerItems.map((item) => (
             <article class="career-item">

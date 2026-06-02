@@ -1,29 +1,42 @@
 ---
 import '../styles/pages/home.css';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import FeaturedPostGrid from '../components/FeaturedPostGrid.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { DATE_LOCALE, SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 const tr = getUiText();
 
-const posts = (await getCollection('blog'))
+const posts = (await getCollection('posts'))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const featured = posts.find((post) => post.data.homeFeatured) ?? posts[0];
+const heroCandidates = posts.filter((post) => post.id !== featured?.id);
 const pinnedHeroPosts = posts
-  .filter((post) => post.data.homeHeroOrder)
+  .filter((post) => post.id !== featured?.id && post.data.homeHeroOrder)
   .sort((a, b) => {
     const orderDelta = (a.data.homeHeroOrder ?? 0) - (b.data.homeHeroOrder ?? 0);
     if (orderDelta !== 0) return orderDelta;
     return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
   });
-const fallbackHeroPosts = posts.filter((post) => !post.data.homeHeroOrder);
+const fallbackHeroPosts = heroCandidates.filter((post) => !post.data.homeHeroOrder);
 const heroPosts = [...pinnedHeroPosts, ...fallbackHeroPosts].slice(0, 2);
+const heroDateFormatter = new Intl.DateTimeFormat(DATE_LOCALE, {
+  year: 'numeric',
+  month: 'short',
+  day: '2-digit',
+});
+const getHeroDateParts = (date: Date) => {
+  const parts = heroDateFormatter.formatToParts(date);
+  return {
+    label: heroDateFormatter.format(date),
+    parts,
+  };
+};
 const gridCandidates = posts.filter((post) => post.id !== featured?.id);
 const pinnedGridPosts = gridCandidates
   .filter((post) => post.data.homeOrder)
@@ -34,6 +47,17 @@ const pinnedGridPosts = gridCandidates
   });
 const fallbackGridPosts = gridCandidates.filter((post) => !post.data.homeOrder);
 const gridPosts = [...pinnedGridPosts, ...fallbackGridPosts].slice(0, 3);
+const featuredPlaceholder = featured?.data.heroImage
+  ? await getImage({
+      src: featured.data.heroImage,
+      width: 48,
+      format: 'webp',
+      quality: 28,
+    })
+  : undefined;
+const featuredPlaceholderStyle = featuredPlaceholder
+  ? `--tone-image-placeholder: url("${featuredPlaceholder.src}");`
+  : undefined;
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -56,19 +80,29 @@ const gridPosts = [...pinnedGridPosts, ...fallbackGridPosts].slice(0, 3);
         heroPosts.length > 0 && (
           <nav class="hero-recent" aria-label="Selected posts">
             <div class="hero-recent-list">
-              {heroPosts.map((post) => (
-                <a href={withBase(`/blog/${post.id}/`)} class="hero-recent-item">
-                  <span class="hero-recent-main">
-                    <span class="hero-recent-title">{post.data.title}</span>
-                    <span class="hero-recent-arrow" aria-hidden="true">
-                      ↗
-                    </span>
-                  </span>
-                  <span class="hero-recent-date">
-                    <FormattedDate date={post.data.pubDate} />
-                  </span>
-                </a>
-              ))}
+              {
+                heroPosts.map((post) => {
+                  const heroDate = getHeroDateParts(post.data.pubDate);
+
+                  return (
+                    <a href={withBase(`/posts/${post.id}/`)} class="hero-recent-item">
+                      <span class="hero-recent-main">
+                        <span class="hero-recent-title">{post.data.title}</span>
+                        <span class="hero-recent-arrow" aria-hidden="true">
+                          ↗
+                        </span>
+                      </span>
+                      <span class="hero-recent-date">
+                        <time datetime={post.data.pubDate.toISOString()} aria-label={heroDate.label}>{
+                          heroDate.parts.map((part) => (
+                            <span class={`hero-recent-date-${part.type}`}>{part.value}</span>
+                          ))
+                        }</time>
+                      </span>
+                    </a>
+                  );
+                })
+              }
             </div>
           </nav>
         )
@@ -78,7 +112,7 @@ const gridPosts = [...pinnedGridPosts, ...fallbackGridPosts].slice(0, 3);
     {
       featured && (
         <section class="featured-section">
-          <a href={withBase(`/blog/${featured.id}/`)} class="featured-card">
+          <a href={withBase(`/posts/${featured.id}/`)} class="featured-card">
             <div class="featured-text">
               <p class="featured-meta">
                 <FormattedDate date={featured.data.pubDate} />
@@ -89,7 +123,7 @@ const gridPosts = [...pinnedGridPosts, ...fallbackGridPosts].slice(0, 3);
               )}
               <span class="featured-cta">{tr.readLink}</span>
             </div>
-            <div class="featured-thumb-wrap">
+            <div class="featured-thumb-wrap" style={featuredPlaceholderStyle}>
               {featured.data.heroImage ? (
                 <Image
                   src={featured.data.heroImage}
@@ -113,7 +147,7 @@ const gridPosts = [...pinnedGridPosts, ...fallbackGridPosts].slice(0, 3);
       gridPosts.length > 0 && (
         <section class="posts-section">
           <div class="posts-header">
-            <a href={withBase('/blog')} class="view-all">
+            <a href={withBase('/posts')} class="view-all">
               {tr.viewAll}
             </a>
           </div>

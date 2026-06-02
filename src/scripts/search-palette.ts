@@ -61,6 +61,7 @@ export function mountSearchPalette(root: ParentNode = document) {
 
   const input = dialog.querySelector('[data-search-palette-input]');
   const results = dialog.querySelector('[data-search-palette-results]');
+  const closeButton = dialog.querySelector('[data-search-palette-close]');
   if (!(input instanceof HTMLInputElement) || !(results instanceof HTMLElement)) return;
 
   const items = getItems();
@@ -162,6 +163,10 @@ export function mountSearchPalette(root: ParentNode = document) {
   input.addEventListener('input', () => {
     activeIndex = 0;
     render();
+  });
+
+  closeButton?.addEventListener('click', () => {
+    close();
   });
 
   results.addEventListener('mouseover', (event) => {

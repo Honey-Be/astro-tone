@@ -14,7 +14,7 @@ const { date, class: className } = Astro.props;
     date.toLocaleDateString(DATE_LOCALE, {
       year: 'numeric',
       month: 'short',
-      day: 'numeric',
+      day: '2-digit',
     })
   }
 </time>

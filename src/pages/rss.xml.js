@@ -4,7 +4,7 @@ import { SITE_DESCRIPTION, SITE_LANG, SITE_TITLE } from '../consts';
 import { withBase } from '../utils/paths';
 
 export async function GET(context) {
-  const posts = (await getCollection('blog'))
+  const posts = (await getCollection('posts'))
     .filter((p) => !p.data.draft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -17,7 +17,7 @@ export async function GET(context) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.pubDate,
-      link: withBase(`/blog/${post.id}/`),
+      link: withBase(`/posts/${post.id}/`),
     })),
   });
 }

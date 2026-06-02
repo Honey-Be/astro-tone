@@ -5,10 +5,10 @@ import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 import FormattedDate from './FormattedDate.astro';
 
-type BlogPost = CollectionEntry<'blog'>;
+type PostEntry = CollectionEntry<'posts'>;
 
 type Props = {
-  posts: BlogPost[];
+  posts: PostEntry[];
   basePath?: string;
   headingLevel?: 'h2' | 'h3';
   showFilters?: boolean;
@@ -18,7 +18,7 @@ type Props = {
 
 const {
   posts,
-  basePath = '/blog',
+  basePath = '/posts',
   headingLevel = 'h2',
   showFilters = true,
   showMore = true,
@@ -203,6 +203,7 @@ const Heading = headingLevel;
   --feed-control-height: 2rem;
   --feed-more-height: 2.5rem;
   --feed-hover-shift: 0.125rem;
+  --feed-date-size: var(--text-footnote);
 
   display: grid;
   gap: var(--space-6);
@@ -261,7 +262,7 @@ const Heading = headingLevel;
   color: var(--label-tertiary);
   font: inherit;
   font-size: var(--text-footnote);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-regular);
   cursor: pointer;
   transition: color var(--duration-fast) var(--ease-out);
 }
@@ -528,13 +529,14 @@ const Heading = headingLevel;
 
 .feed-link :global(.feed-date) {
   color: var(--label-tertiary);
-  font-size: var(--text-footnote);
+  font-size: var(--feed-date-size);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .feed-body {
   min-width: 0;
+  max-width: 100%;
 }
 
 .feed-title {
@@ -543,7 +545,7 @@ const Heading = headingLevel;
   font-size: var(--text-title-3);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-snug);
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: -0.012em;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
@@ -552,11 +554,12 @@ const Heading = headingLevel;
 }
 
 .feed-desc {
-  max-width: 62ch;
+  max-width: min(62ch, 100%);
   margin: var(--space-2) 0 0;
   color: var(--label-secondary);
   font-size: var(--text-callout);
   line-height: var(--leading-normal);
+  overflow-wrap: break-word;
 }
 
 .feed-meta {
@@ -569,7 +572,7 @@ const Heading = headingLevel;
 .feed-category {
   color: var(--color-blue);
   font-size: var(--text-caption-2);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-accent-label);
 }
 
 .feed-arrow {

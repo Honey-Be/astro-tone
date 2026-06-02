@@ -24,10 +24,6 @@ Find `--color-blue` near the top. There are three copies:
 
 Edit all three. The starter uses the same variable name across modes so components do not need to know which mode they are in.
 
-## Scroll dark turns on here
-
-This sample post has the optional scroll dark effect enabled. Keep scrolling through this color example and the page will switch to dark mode. Add or remove `focusEffect: 'scroll-dark'` in a post's frontmatter to turn it on or off for that post; the trigger point is theme-defined, not section-specific.
-
 ```css
 :root {
   --color-blue: #197ca8; /* light mode */
@@ -39,6 +35,17 @@ This sample post has the optional scroll dark effect enabled. Keep scrolling thr
 ```
 
 Rule of thumb: a darker shade for light mode (passes contrast on white) and a lighter shade for dark mode (passes contrast on near-black). The starter's pair is a good starting point; push the hue without changing that contrast relationship.
+
+## Scroll dark turns on here
+
+Scroll dark is off by default. This sample turns it on only for the demo. Add `focusEffect: 'scroll-dark'` to any post frontmatter to enable it for that post.
+
+```yaml
+---
+title: 'Your post'
+focusEffect: 'scroll-dark'
+---
+```
 
 ## Change spacing
 
@@ -62,7 +69,7 @@ Common edits:
 
 ## Change the type scale
 
-Astro Tone follows a quiet type scale at 16px base:
+Tone follows a quiet type scale at 16px base:
 
 ```css
 --text-large-title: 2.125rem; /* page hero */
@@ -82,7 +89,7 @@ For a more compact theme, scale every step down by ~10%:
 --text-title-2: 1.25rem;
 ```
 
-Post title sizes use `clamp()` directly in `src/styles/layouts/blog-post.css`. Edit there if you want a different scaling curve at wide widths.
+Post title sizes use `clamp()` directly in `src/styles/layouts/post.css`. Edit there if you want a different scaling curve at wide widths.
 
 ## Verify in dark mode
 
@@ -94,9 +101,9 @@ Three places to check:
 2. **Hard-coded colors.** Grep the codebase for `#` and `rgb(` outside `tokens.css`, `src/config/expressive-code.ts`, and `src/styles/code.css`. The code block palette is intentionally separate; everything else should usually read from tokens.
 3. **Images.** Photos that read on white can disappear on near-black. Use a subtle separator or a tinted background for prose images if needed.
 
-## Replace the font stack
+## Change the font stack
 
-The starter uses a system font stack by default. That keeps the first render fast and avoids bundling font license surface into the template.
+The default stack starts with a small Pretendard subset and falls back to system fonts.
 
 To add a brand font:
 

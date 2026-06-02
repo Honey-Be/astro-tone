@@ -14,8 +14,8 @@ Skip any step that does not apply.
 ## Install
 
 ```bash
-npm create astro@latest my-blog -- --template hanityx/astro-tone
-cd my-blog
+npm create astro@latest my-posts -- --template hanityx/astro-tone
+cd my-posts
 npm run dev
 ```
 
@@ -51,9 +51,9 @@ The starter keeps the public surface small. Most changes happen in one of these 
 
 ```text
 src/
-  assets/             Demo images
+  assets/             Sample images and fonts
   components/         Astro components
-  content/blog/       Markdown and MDX posts
+  content/posts/      Markdown and MDX posts
   layouts/            Shared layouts
   pages/              Routes
   scripts/            Client-side behavior
@@ -73,7 +73,7 @@ If you want header links:
 
 ```ts
 nav: [
-  { label: 'Blog', href: '/blog' },
+  { label: 'Posts', href: '/posts' },
   { label: 'About', href: '/about' },
 ],
 ```
@@ -82,9 +82,9 @@ Footer links live in `footerNav` and stay visible regardless. A quiet header wit
 
 ## Write the first post
 
-Posts live in `src/content/blog/`. The filename becomes the URL slug.
+Posts live in `src/content/posts/`. The filename becomes the URL slug.
 
-Create `src/content/blog/hello.md`:
+Create `src/content/posts/hello.md`:
 
 ```md
 ---
@@ -100,7 +100,7 @@ This is the first paragraph. Start with a concrete note, a small decision, or on
 Required: `title`, `description`, `pubDate`. Everything else is optional.
 
 - `draft: true` keeps the post out of the build, the RSS feed, and the search index.
-- `category` powers the filter row on `/blog`. Pick from `config.content.categoryOrder` or add a new one.
+- `category` powers the filter row on `/posts`. Pick from `config.content.categoryOrder` or add a new one.
 - `heroImage` is a relative path to a file inside `src/assets/`. It feeds cards, social metadata, and structured data; place the image in the Markdown body too when the post should show it inline.
 - `homeHeroOrder: 1` pins a post into one of the two compact links at the top of the home page. Lower numbers appear first; unpinned posts fill any empty slots by publish date.
 - `homeFeatured: true` pins one post to the large feature card on the home page.
@@ -114,10 +114,10 @@ The starter ships with sample posts to exercise the layout. Replace or delete th
 The fastest path:
 
 1. Keep this guide if you find it useful.
-2. Delete the others from `src/content/blog/`.
+2. Delete the others from `src/content/posts/`.
 3. Add three or four of your own.
 
-The blog index, RSS, related posts, and search update on the next build.
+The posts index, RSS, related posts, and search update on the next build.
 
 ## Run the checks
 
@@ -149,7 +149,7 @@ After the first live deploy, set `site.url` in `astro-theme-config.ts` to the re
 
 If you deploy under a subpath such as `username.github.io/repo`, set `site.base` in `astro-theme-config.ts` before publishing. The Astro config reads that value for you.
 
-The bundled GitHub Pages workflow sets `ASTRO_SITE_URL` and `ASTRO_SITE_BASE` automatically for project pages. For example, a repository named `my-blog` deploys with `/my-blog`; a user site repository named `username.github.io` deploys at the domain root.
+The bundled GitHub Pages workflow sets `ASTRO_SITE_URL` and `ASTRO_SITE_BASE` automatically for project pages. For example, a repository named `my-posts` deploys with `/my-posts`; a user site repository named `username.github.io` deploys at the domain root.
 
 ## Enable comments (optional)
 

@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-   14. PROSE (blog content)
+   14. PROSE (post content)
    ------------------------------------------------------------ */
 .prose {
   --inline-code-bg: color-mix(in srgb, var(--color-blue) 7%, transparent);
@@ -13,7 +13,7 @@
   --prose-mark-bg: color-mix(in srgb, var(--color-blue) 22%, transparent);
   --prose-mark-fg: var(--label-primary);
 
-  font-size: var(--text-body);
+  font-size: clamp(1rem, 0.99rem + 0.04vw, 1.0156rem);
   line-height: 1.76;
   color: var(--label-primary);
 }
@@ -79,7 +79,7 @@
 
 .prose h1 {
   font-size: var(--text-title-1);
-  font-weight: 700;
+  font-weight: 650;
   line-height: 1.16;
   letter-spacing: 0;
   margin-block-start: var(--space-12);
@@ -87,8 +87,8 @@
 
 .prose h2 {
   font-size: var(--text-title-2);
-  font-weight: 700;
-  line-height: 1.2;
+  font-weight: 650;
+  line-height: 1.24;
   letter-spacing: 0;
   margin-block-start: var(--space-12);
 }
@@ -208,6 +208,13 @@
   display: block;
   border-radius: var(--radius-md);
   border: 1px solid var(--prose-rule);
+  background:
+    radial-gradient(
+      circle at 24% 24%,
+      color-mix(in srgb, var(--label-primary) 6%, transparent),
+      transparent 32%
+    ),
+    linear-gradient(135deg, var(--fill-secondary), var(--fill-tertiary));
   margin-inline: auto;
 }
 

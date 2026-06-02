@@ -17,6 +17,9 @@
 
 /* Code blocks — rendered by astro-expressive-code */
 .expressive-code {
+  --ec-codePadBlk: clamp(0.8rem, 0.658rem + 0.606vw, 1.05rem);
+  --ec-codePadInl: clamp(0.875rem, 0.661rem + 0.909vw, 1.25rem);
+
   margin: var(--space-8) 0 var(--space-10);
   color-scheme: dark;
 }
@@ -34,6 +37,17 @@
 
 .expressive-code .frame code {
   color: inherit;
+}
+
+.expressive-code .frame pre > code {
+  font-size: clamp(0.7188rem, 0.683rem + 0.152vw, var(--text-caption-1));
+  line-height: 1.62;
+}
+
+@media (max-width: 600px) {
+  .expressive-code .frame pre > code {
+    line-height: 1.52;
+  }
 }
 
 .expressive-code pre[data-language] > code {

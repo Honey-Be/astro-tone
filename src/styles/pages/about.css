@@ -11,27 +11,28 @@
 
 .about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(16rem, 18rem);
-  gap: var(--space-12);
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 18.5rem);
+  gap: var(--space-10);
   align-items: start;
   padding-bottom: var(--space-12);
 }
 
 .section-label {
+  align-self: start;
   margin: 0;
   color: var(--color-blue);
   font-size: var(--text-caption-1);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
-  line-height: 1;
+  font-weight: var(--weight-accent-label);
+  letter-spacing: 0.1em;
+  line-height: var(--leading-relaxed);
   text-transform: uppercase;
 }
 
 .about-title {
-  max-width: 9ch;
+  max-width: 10.5ch;
   margin: 0;
   color: var(--label-primary);
-  font-size: clamp(3.5rem, 6.7vw, 5.5rem);
+  font-size: clamp(3.4rem, 6.45vw, 5.3rem);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: 0.94;
@@ -41,7 +42,8 @@
   max-width: 38rem;
   margin: var(--space-8) 0 0;
   color: var(--label-secondary);
-  font-size: var(--text-title-3);
+  font-size: 1.2188rem;
+  font-weight: 450;
   line-height: var(--leading-normal);
 }
 
@@ -114,6 +116,7 @@
   margin: 0;
   color: var(--label-secondary);
   font-size: var(--text-callout);
+  font-weight: 450;
   line-height: var(--leading-normal);
 }
 
@@ -125,21 +128,22 @@
 
 .profile-meta div {
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr);
-  gap: var(--space-4);
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--space-3);
 }
 
-.profile-meta dt,
-.career-item time {
-  color: var(--label-tertiary);
-  font-size: var(--text-footnote);
-  font-weight: var(--weight-semibold);
+.profile-meta dt {
+  color: var(--label-secondary);
+  font-size: var(--text-caption-1);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
 }
 
 .profile-meta dd {
   margin: 0;
-  color: var(--label-primary);
-  font-size: var(--text-footnote);
+  color: var(--label-secondary);
+  font-size: var(--text-caption-1);
+  font-weight: var(--weight-regular);
   line-height: var(--leading-normal);
 }
 
@@ -150,17 +154,20 @@
 }
 
 .profile-links a {
-  color: var(--label-primary);
-  font-weight: var(--weight-semibold);
+  color: var(--label-secondary);
+  font-weight: var(--weight-regular);
   text-decoration-color: transparent;
   text-underline-offset: 0.25em;
   transition:
     color var(--duration-fast) var(--ease-out),
+    font-weight var(--duration-fast) var(--ease-out),
     text-decoration-color var(--duration-fast) var(--ease-out);
 }
 
-.profile-links a:hover {
-  color: var(--color-blue);
+.profile-links a:hover,
+.profile-links a:focus-visible {
+  color: var(--label-primary);
+  font-weight: var(--weight-medium);
   opacity: 1;
   text-decoration-color: currentColor;
 }
@@ -177,10 +184,19 @@
   max-width: 20ch;
   margin: 0;
   color: var(--label-primary);
-  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  font-size: clamp(1.58rem, 2.85vw, 2.15rem);
   font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
+}
+
+.career-item p {
+  max-width: 42rem;
+  margin: var(--space-4) 0 0;
+  color: var(--label-secondary);
+  font-size: var(--text-callout);
+  font-weight: 450;
+  line-height: var(--leading-relaxed);
 }
 
 .about-statement p:not(.section-label) {
@@ -188,14 +204,7 @@
   margin: var(--space-4) 0 0;
   color: var(--label-secondary);
   font-size: var(--text-callout);
-  line-height: var(--leading-relaxed);
-}
-
-.career-item > :where(p) {
-  max-width: 42rem;
-  margin: var(--space-4) 0 0;
-  color: var(--label-secondary);
-  font-size: var(--text-callout);
+  font-weight: 450;
   line-height: var(--leading-relaxed);
 }
 
@@ -208,13 +217,20 @@
   display: grid;
   grid-template-columns: 7rem minmax(0, 1fr);
   gap: var(--space-6);
+  align-items: start;
+}
+
+.career-item time {
+  color: var(--label-tertiary);
+  font-size: var(--text-footnote);
+  font-weight: 450;
 }
 
 .career-item h3 {
   margin: 0;
   color: var(--label-primary);
   font-size: var(--text-title-3);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
 }
@@ -230,9 +246,10 @@
 .focus-list li {
   position: relative;
   padding-left: var(--space-6);
-  color: var(--label-primary);
+  color: var(--label-secondary);
   font-size: var(--text-callout);
-  line-height: var(--leading-normal);
+  font-weight: 450;
+  line-height: var(--leading-relaxed);
 }
 
 .focus-list li::before {

@@ -6,7 +6,7 @@ type NavItem = {
 /**
  * astro-theme-config.ts
  *
- * Central configuration for the Astro Tone theme.
+ * Central configuration for the Tone theme.
  * Most site-level customization should happen in this file.
  */
 
@@ -19,7 +19,7 @@ const config = {
     lang: 'en',
     locale: 'en_US',
     dateLocale: 'en-US',
-    title: 'Astro Tone',
+    title: 'Tone',
     logoLabel: 'Tone',
     description: 'A minimal Astro theme for posts and notes.',
     author: 'Alex Morgan',
@@ -28,12 +28,12 @@ const config = {
   },
 
   // The logo already links to `/`. Add items here if you want visible header links.
-  // Example: [{ label: 'Blog', href: '/blog' }, { label: 'About', href: '/about' }]
+  // Example: [{ label: 'Posts', href: '/posts' }, { label: 'About', href: '/about' }]
   nav: [] as NavItem[],
 
   // Footer links stay visible by default so readers have a stable way to move around.
   footerNav: [
-    { label: 'Blog', href: '/blog' },
+    { label: 'Posts', href: '/posts' },
     { label: 'About', href: '/about' },
     { label: 'Search', href: '/search' },
   ] as NavItem[],
@@ -60,7 +60,7 @@ const config = {
     // One-line switch after you fill the giscus values:
     // mode: 'off'           -> no comments
     // mode: 'giscus'        -> original giscus theme
-    // mode: 'giscus-custom' -> Astro Tone custom giscus theme
+    // mode: 'giscus-custom' -> Tone custom giscus theme
     // Local preview can also use PUBLIC_GISCUS_MODE and PUBLIC_GISCUS_* in .env.local.
     mode: 'off',
     provider: 'giscus',
@@ -103,7 +103,6 @@ const config = {
     statement:
       'This page is intentionally spare: a short bio, a few links, and enough context for readers who want to know who is writing.',
     careerLabel: 'Career',
-    careerHeading: 'Career timeline',
     career: [
       {
         period: 'Current',

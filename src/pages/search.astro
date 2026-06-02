@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/paths';
 ---
 
-<BaseLayout title="Search" description="Search blog posts" robots="noindex, follow">
+<BaseLayout title="Search" description="Search posts" robots="noindex, follow">
   <main id="main-content" class="search-main">
     <div class="search-header">
       <h1 class="search-title">Search</h1>
@@ -18,7 +18,7 @@ import { withBase } from '../utils/paths';
           }
         </style>
         <p class="search-fallback">
-          Search needs JavaScript. Browse the <a href={withBase('/blog/')}>blog archive</a> instead.
+          Search needs JavaScript. Browse the <a href={withBase('/posts/')}>posts archive</a> instead.
         </p>
       </noscript>
     </div>
