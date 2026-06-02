@@ -1,29 +1,28 @@
 # Tone
 
-Typography-first Astro blog starter with quiet defaults, MDX support, dark mode,
-Pagefind search, RSS, sitemap output, and a minimal writing surface.
+Minimal Astro blog starter with quiet defaults.
 
 <p>
   <a href="https://hanityx.github.io/astro-tone/">Live demo</a> ·
   <a href="https://github.com/hanityx/astro-tone">Use this template</a>
 </p>
 
-![Tone responsive preview](assets/demo/astro-tone-showcase-1600x900.png)
+![Tone responsive preview](.github/assets/astro-tone-showcase-1600x900.png)
 
 ## Command Palette
 
 Open quick post search with `Cmd`/`Ctrl` + `K`.
 
 <p>
-  <img src="assets/demo/command-palette-light-1600x900.png" alt="Tone command palette in light mode" width="49%" />
-  <img src="assets/demo/command-palette-dark-1600x900.png" alt="Tone command palette in dark mode" width="49%" />
+  <img src=".github/assets/command-palette-light-1600x900.png" alt="Tone command palette in light mode" width="49%" />
+  <img src=".github/assets/command-palette-dark-1600x900.png" alt="Tone command palette in dark mode" width="49%" />
 </p>
 
 ## Features
 
-- Astro 6 static site
-- Markdown and MDX posts in `src/content/blog`
-- Blog index with category filters and inline list search
+- Responsive Astro 6 static site
+- Markdown and MDX posts in `src/content/posts`
+- Posts index with category filters and inline list search
 - `/search` route powered by Pagefind
 - `Cmd`/`Ctrl` + `K` command palette for quick post search
 - Dark mode with CSS tokens
@@ -87,6 +86,10 @@ npm run dev
 
 The local dev server usually starts at `http://localhost:4321`.
 
+Before publishing your own site, update `astro-theme-config.ts`, replace the
+sample content and assets, then run `npm run check`, `npm run lint`,
+`npm run lint:css`, and `npm run build`.
+
 ## Commands
 
 | Command            | Action                                         |
@@ -103,7 +106,7 @@ The local dev server usually starts at `http://localhost:4321`.
 
 Most site-level settings live in `astro-theme-config.ts`.
 
-The bundled [setup post](src/content/blog/getting-started-v2.md) walks through
+The bundled [setup post](src/content/posts/getting-started-v2.md) walks through
 configuration, the project structure, writing posts, replacing the samples,
 deployment, and optional giscus comments.
 
@@ -118,10 +121,6 @@ Tone builds as a static site.
 
 The starter supports domain-root deploys and GitHub Pages project paths.
 
-No analytics run by default. To opt into Vercel Analytics, set
-`PUBLIC_VERCEL_ANALYTICS=true`.
-
 ## License
 
-Tone source code is MIT licensed. Bundled sample images and project marks are
-documented in `LICENSE`.
+MIT licensed.
