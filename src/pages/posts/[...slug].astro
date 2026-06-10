@@ -1,12 +1,11 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
+import { type CollectionEntry, render } from 'astro:content';
 import readingTimeLib from 'reading-time';
 import PostLayout from '../../layouts/PostLayout.astro';
+import { getVisiblePosts } from '../../utils/posts';
 
 export async function getStaticPaths() {
-  const allPosts = (await getCollection('posts'))
-    .filter((p) => !p.data.draft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const allPosts = await getVisiblePosts();
 
   return allPosts.map((post) => {
     const slug = post.id;

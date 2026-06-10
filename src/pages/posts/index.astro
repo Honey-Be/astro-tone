@@ -1,16 +1,14 @@
 ---
 import '../../styles/pages/posts-index.css';
-import { getCollection } from 'astro:content';
 import PostFeed from '../../components/PostFeed.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_DESCRIPTION } from '../../consts';
 import { getUiText } from '../../ui';
+import { getVisiblePosts } from '../../utils/posts';
 
 const tr = getUiText();
 
-const posts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getVisiblePosts();
 ---
 
 <BaseLayout title={tr.postsTitle} description={SITE_DESCRIPTION}>

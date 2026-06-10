@@ -1,12 +1,15 @@
 ---
 import '../styles/pages/not-found.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
+
+const tr = getUiText();
 ---
 
 <BaseLayout
-  title="Page not found"
-  description="The page you requested does not exist."
+  title={tr.notFound.metaTitle}
+  description={tr.notFound.metaDescription}
   robots="noindex, follow"
   canonicalUrl={withBase('/404.html')}
   pageUrl={withBase('/404.html')}
@@ -14,11 +17,11 @@ import { withBase } from '../utils/paths';
   <main class="not-found-main" id="main-content">
     <div class="not-found-inner">
       <p class="not-found-code">404</p>
-      <h1 class="not-found-title">Page not found</h1>
-      <p class="not-found-desc">The URL may be wrong, or the page may have been removed.</p>
+      <h1 class="not-found-title">{tr.notFound.title}</h1>
+      <p class="not-found-desc">{tr.notFound.description}</p>
       <div class="not-found-actions">
-        <a href={withBase('/')} class="btn btn-primary">Home</a>
-        <a href={withBase('/posts')} class="btn btn-secondary">All posts</a>
+        <a href={withBase('/')} class="btn btn-primary">{tr.notFound.home}</a>
+        <a href={withBase('/posts')} class="btn btn-secondary">{tr.notFound.allPosts}</a>
       </div>
     </div>
   </main>

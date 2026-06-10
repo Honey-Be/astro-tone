@@ -86,7 +86,8 @@ export function mountSearchPalette(root: ParentNode = document) {
     activeIndex = Math.min(activeIndex, Math.max(renderedItems.length - 1, 0));
 
     if (renderedItems.length === 0) {
-      results.innerHTML = '<p class="search-palette-empty">No matching posts.</p>';
+      const emptyLabel = dialog.dataset.emptyLabel || 'No matching posts.';
+      results.innerHTML = `<p class="search-palette-empty">${escapeHtml(emptyLabel)}</p>`;
       return;
     }
 

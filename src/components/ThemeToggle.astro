@@ -1,13 +1,18 @@
 ---
+import { getUiText } from '../ui';
+
+const tr = getUiText();
 ---
 
 <button
   type="button"
   class="theme-toggle"
   id="theme-toggle"
-  aria-label="Toggle dark mode"
+  aria-label={tr.themeToggle}
   aria-pressed="false"
-  title="Toggle dark mode"
+  title={tr.themeToggle}
+  data-label-to-light={tr.themeToLight}
+  data-label-to-dark={tr.themeToDark}
 >
   <svg
     class="theme-icon"
@@ -31,9 +36,11 @@
       if (!(btn instanceof HTMLButtonElement) || btn.dataset.themeReady === 'true') return;
       btn.dataset.themeReady = 'true';
 
+      const labelToLight = btn.dataset.labelToLight || 'Switch to light mode';
+      const labelToDark = btn.dataset.labelToDark || 'Switch to dark mode';
       const syncAriaPressed = (dark) => {
         btn.setAttribute('aria-pressed', String(dark));
-        btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+        btn.setAttribute('aria-label', dark ? labelToLight : labelToDark);
       };
 
       syncAriaPressed(root.getAttribute('data-theme') === 'dark');

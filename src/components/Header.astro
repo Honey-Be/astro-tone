@@ -2,10 +2,12 @@
 import config from '../../astro-theme-config';
 import HeaderLink from './HeaderLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
+import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 
-const skipLinkLabel = 'Skip to content';
-const navAriaLabel = 'Primary navigation';
+const tr = getUiText();
+const skipLinkLabel = tr.skipToContent;
+const navAriaLabel = tr.primaryNav;
 const headerTitle = config.site.logoLabel || config.site.title;
 const navItems = config.nav;
 ---

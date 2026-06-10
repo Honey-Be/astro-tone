@@ -10,7 +10,8 @@
   src: url('../assets/fonts/pretendard-variable.woff2') format('woff2');
   font-weight: 45 920;
   font-style: normal;
-  font-display: block;
+  /* swap avoids the invisible-text (FOIT) flash; system-ui shows immediately. */
+  font-display: swap;
 }
 
 @font-face {

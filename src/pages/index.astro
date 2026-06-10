@@ -1,18 +1,16 @@
 ---
 import '../styles/pages/home.css';
 import { Image, getImage } from 'astro:assets';
-import { getCollection } from 'astro:content';
 import FeaturedPostGrid from '../components/FeaturedPostGrid.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { DATE_LOCALE, SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
+import { getVisiblePosts } from '../utils/posts';
 const tr = getUiText();
 
-const posts = (await getCollection('posts'))
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getVisiblePosts();
 
 const featured = posts.find((post) => post.data.homeFeatured) ?? posts[0];
 const heroCandidates = posts.filter((post) => post.id !== featured?.id);
@@ -78,7 +76,7 @@ const featuredPlaceholderStyle = featuredPlaceholder
 
       {
         heroPosts.length > 0 && (
-          <nav class="hero-recent" aria-label="Selected posts">
+          <nav class="hero-recent" aria-label={tr.heroSelectedPosts}>
             <div class="hero-recent-list">
               {
                 heroPosts.map((post) => {

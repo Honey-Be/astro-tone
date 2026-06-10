@@ -16,9 +16,9 @@ const config = {
     url: 'https://example.com',
     /** Subpath such as '/repo-name'. Keep empty when deploying at a domain root. */
     base: '',
-    lang: 'en',
-    locale: 'en_US',
-    dateLocale: 'en-US',
+    lang: 'ko',
+    locale: 'ko_KR',
+    dateLocale: 'ko-KR',
     title: 'Tone',
     logoLabel: 'Tone',
     description: 'A minimal Astro theme for posts and notes.',

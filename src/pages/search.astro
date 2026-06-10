@@ -1,16 +1,19 @@
 ---
 import '../styles/pages/search.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
+
+const tr = getUiText();
 ---
 
-<BaseLayout title="Search" description="Search posts" robots="noindex, follow">
+<BaseLayout title={tr.search.title} description={tr.search.inputLabel} robots="noindex, follow">
   <main id="main-content" class="search-main">
     <div class="search-header">
-      <h1 class="search-title">Search</h1>
+      <h1 class="search-title">{tr.search.title}</h1>
     </div>
     <div id="search" class="search-ui" aria-busy="true">
-      <p class="search-loading" role="status">Loading search...</p>
+      <p class="search-loading" role="status">{tr.search.loading}</p>
       <noscript>
         <style>
           .search-loading {
@@ -18,7 +21,7 @@ import { withBase } from '../utils/paths';
           }
         </style>
         <p class="search-fallback">
-          Search needs JavaScript. Browse the <a href={withBase('/posts/')}>posts archive</a> instead.
+          {tr.search.noscriptText} <a href={withBase('/posts/')}>{tr.search.archiveLinkLabel}</a>
         </p>
       </noscript>
     </div>

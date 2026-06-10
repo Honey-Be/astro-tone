@@ -317,7 +317,7 @@
    Types: callout-tip / callout-warning / callout-note */
 .prose .callout {
   --callout-accent: var(--color-blue);
-  --callout-label: 'Note';
+  --callout-label: var(--callout-text-note, 'Note');
 
   display: block;
   padding: var(--space-3) 0 var(--space-3) var(--space-5);
@@ -351,15 +351,15 @@
 
 .prose .callout-tip {
   --callout-accent: var(--color-success);
-  --callout-label: 'Tip';
+  --callout-label: var(--callout-text-tip, 'Tip');
 }
 
 .prose .callout-warning {
   --callout-accent: var(--color-warning);
-  --callout-label: 'Warning';
+  --callout-label: var(--callout-text-warning, 'Warning');
 }
 
 .prose .callout-note {
   --callout-accent: var(--color-blue);
-  --callout-label: 'Note';
+  --callout-label: var(--callout-text-note, 'Note');
 }

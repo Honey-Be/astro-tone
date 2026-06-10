@@ -1,7 +1,9 @@
 ---
 import config from '../../astro-theme-config';
+import { getUiText } from '../ui';
 import { withBase, withoutBase } from '../utils/paths';
 
+const tr = getUiText();
 const comments = config.comments;
 const giscus = {
   ...comments.giscus,
@@ -28,8 +30,8 @@ const giscusMapping = giscus.mapping === 'pathname' ? 'specific' : giscus.mappin
 
 {
   canRenderGiscus && (
-    <section class="comments-section" data-pagefind-ignore="all" aria-label="Comments">
-      <p class="comments-label">Comments</p>
+    <section class="comments-section" data-pagefind-ignore="all" aria-label={tr.comments}>
+      <p class="comments-label">{tr.comments}</p>
       <div
         id="giscus-container"
         class="giscus"

@@ -1,7 +1,9 @@
 ---
 import config from '../../astro-theme-config';
+import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 
+const tr = getUiText();
 const today = new Date();
 const footerTitle = config.site.logoLabel || config.site.title;
 const footerLinks = config.footerNav.filter((item) => item.href !== '/');
@@ -15,7 +17,7 @@ const footerLinks = config.footerNav.filter((item) => item.href !== '/');
     </p>
     {
       footerLinks.length > 0 && (
-        <nav class="footer-links" aria-label="Footer navigation">
+        <nav class="footer-links" aria-label={tr.footerNav}>
           {footerLinks.map((item) => (
             <a
               href={withBase(item.href)}

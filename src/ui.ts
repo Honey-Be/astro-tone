@@ -1,27 +1,8 @@
-const ui = {
-  backLink: '← All Posts',
-  readingTime: (n: number) => `${n} min read`,
-  updated: 'Updated',
-  relatedPosts: 'Related',
-  allPosts: 'All Posts →',
-  postsEyebrow: 'Archive',
-  postsTitle: 'All Posts',
-  heroTitle: 'Keep notes.',
-  heroTitleLine2: '',
-  viewAll: 'All Posts →',
-  readLink: 'Read →',
-  postFeed: {
-    all: 'All',
-    filterLabel: 'Filter posts by category',
-    previousCategories: 'Scroll categories left',
-    nextCategories: 'Scroll categories right',
-    searchLabel: 'Search posts',
-    empty: 'No posts match this filter.',
-    more: 'Load more',
-    read: 'Read',
-  },
-};
-
-export function getUiText() {
-  return ui;
-}
+/**
+ * ui.ts — backward-compatible re-export of the i18n layer.
+ *
+ * UI strings now live in `src/i18n/` (one file per locale). Existing imports
+ * `import { getUiText } from '../ui'` keep working through this shim.
+ */
+export { getUiText } from './i18n';
+export type { UiText } from './i18n';
