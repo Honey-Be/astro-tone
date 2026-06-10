@@ -4,6 +4,17 @@ type NavItem = {
 };
 
 /**
+ * A category in the (nestable) category tree. `parent` references another
+ * category `id`; omit it for a top-level category. Articles reference a leaf
+ * category by `id`; the URL path is the chain of ancestor ids.
+ */
+type CategoryNode = {
+  id: string;
+  label: string;
+  parent?: string;
+};
+
+/**
  * astro-theme-config.ts
  *
  * Central configuration for the Tone theme.
@@ -33,23 +44,25 @@ const config = {
 
   // Footer links stay visible by default so readers have a stable way to move around.
   footerNav: [
-    { label: 'Posts', href: '/posts' },
+    { label: 'Articles', href: '/articles' },
     { label: 'About', href: '/about' },
     { label: 'Search', href: '/search' },
   ] as NavItem[],
 
   content: {
-    categoryOrder: [
-      'Design',
-      'Getting Started',
-      'Markdown',
-      'Open Source',
-      'Systems',
-      'Notes',
-      'Research',
-      'Performance',
-      'MDX',
-    ],
+    /**
+     * Nestable category tree. Order here is the display order among siblings.
+     * Articles reference a leaf category by `id`; ancestors form the URL path
+     * and breadcrumb (e.g. reference → markdown ⇒ /categories/reference/markdown).
+     */
+    categories: [
+      { id: 'guides', label: 'Guides' },
+      { id: 'getting-started', label: 'Getting Started', parent: 'guides' },
+      { id: 'design', label: 'Design' },
+      { id: 'reference', label: 'Reference' },
+      { id: 'markdown', label: 'Markdown', parent: 'reference' },
+      { id: 'mdx', label: 'MDX', parent: 'reference' },
+    ] as CategoryNode[],
   },
 
   behavior: {

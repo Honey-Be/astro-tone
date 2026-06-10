@@ -27,6 +27,31 @@
   line-height: 1.04;
 }
 
+.term-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-footnote);
+  color: var(--label-tertiary);
+}
+
+.term-breadcrumb a {
+  color: var(--label-secondary);
+  text-decoration: none;
+}
+
+.term-breadcrumb a:hover,
+.term-breadcrumb a:focus-visible {
+  color: var(--color-blue);
+  opacity: 1;
+}
+
+.term-breadcrumb-sep {
+  color: var(--label-quaternary);
+}
+
 @media (max-width: 600px) {
   .posts-main {
     padding: var(--space-12) var(--space-4) var(--space-16);

@@ -2,8 +2,12 @@
 title: 'Change the Look in One File'
 description: 'Color, spacing, and type for the whole theme live in one tokens file. Edit it, refresh, done.'
 pubDate: '2026-03-20'
-category: 'Design'
+articleId: 2
+articleType: 'research'
+category: 'design'
 tags: ['tokens', 'css', 'theming']
+project: 'tone-fork'
+authors: ['alex-morgan']
 heroImage: '../../assets/tone-sample-blue-architecture.jpg'
 focusEffect: 'scroll-dark'
 homeOrder: 1

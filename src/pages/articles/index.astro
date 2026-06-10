@@ -4,11 +4,10 @@ import PostFeed from '../../components/PostFeed.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_DESCRIPTION } from '../../consts';
 import { getUiText } from '../../ui';
-import { getVisiblePosts } from '../../utils/posts';
+import { getVisibleArticles } from '../../utils/articles';
 
 const tr = getUiText();
-
-const posts = await getVisiblePosts();
+const posts = await getVisibleArticles();
 ---
 
 <BaseLayout title={tr.postsTitle} description={SITE_DESCRIPTION}>
@@ -20,6 +19,6 @@ const posts = await getVisiblePosts();
       </div>
     </div>
 
-    <PostFeed posts={posts} basePath="/posts" initialVisible={8} />
+    <PostFeed posts={posts} initialVisible={8} />
   </main>
 </BaseLayout>

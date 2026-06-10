@@ -48,10 +48,20 @@ export const en: UiText = {
   terms: {
     category: 'Category',
     tag: 'Tag',
+    project: 'Project',
+    author: 'Author',
+    breadcrumb: 'Breadcrumb',
     categoryTitle: (name) => name,
-    categoryDescription: (name) => `Posts in ${name}`,
+    categoryDescription: (name) => `Articles in ${name}`,
     tagTitle: (name) => `#${name}`,
-    tagDescription: (name) => `Posts tagged ${name}`,
+    tagDescription: (name) => `Articles tagged ${name}`,
+  },
+
+  articleType: {
+    news: 'News',
+    COD: 'On-demand',
+    notice: 'Notice',
+    research: 'Research',
   },
 
   comments: 'Comments',

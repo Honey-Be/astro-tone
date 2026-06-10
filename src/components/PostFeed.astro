@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import config from '../../astro-theme-config';
 import { getUiText } from '../ui';
+import { articleHref } from '../utils/articles';
+import { allCategories, getCategory } from '../utils/categories';
 import { withBase } from '../utils/paths';
 import FormattedDate from './FormattedDate.astro';
 
@@ -18,7 +19,6 @@ type Props = {
 
 const {
   posts,
-  basePath = '/posts',
   headingLevel = 'h2',
   showFilters = true,
   showMore = true,
@@ -27,18 +27,10 @@ const {
 
 const labels = getUiText().postFeed;
 
-const postSlug = (id: string) => id;
-const categoryOrder = config.content.categoryOrder;
-const sortByCategoryOrder = (a: string, b: string) => {
-  const aIndex = categoryOrder.indexOf(a);
-  const bIndex = categoryOrder.indexOf(b);
-  if (aIndex !== -1 || bIndex !== -1) {
-    return (
-      (aIndex === -1 ? categoryOrder.length : aIndex) -
-      (bIndex === -1 ? categoryOrder.length : bIndex)
-    );
-  }
-  return a.localeCompare(b);
+const categoryLabel = (id: string) => getCategory(id)?.label ?? id;
+const categoryRank = (id: string) => {
+  const index = allCategories().findIndex((node) => node.id === id);
+  return index === -1 ? Number.POSITIVE_INFINITY : index;
 };
 const categories = [
   ...new Set(
@@ -46,10 +38,10 @@ const categories = [
       .map((post) => post.data.category)
       .filter((category): category is string => Boolean(category))
   ),
-].sort(sortByCategoryOrder);
+].sort((a, b) => categoryRank(a) - categoryRank(b));
 const filters = categories.map((category) => ({
   key: `category:${category}`,
-  label: category,
+  label: categoryLabel(category),
   count: posts.filter((post) => post.data.category === category).length,
 }));
 const Heading = headingLevel;
@@ -156,14 +148,14 @@ const Heading = headingLevel;
           data-search={`${post.data.title} ${post.data.description} ${post.data.category ?? ''}`.toLocaleLowerCase()}
           data-index={index}
         >
-          <a href={withBase(`${basePath}/${postSlug(post.id)}/`)} class="feed-link">
+          <a href={withBase(articleHref(post))} class="feed-link">
             <FormattedDate class="feed-date" date={post.data.pubDate} />
             <div class="feed-body">
               <Heading class="feed-title">{post.data.title}</Heading>
               {post.data.description && <p class="feed-desc">{post.data.description}</p>}
               {post.data.category && (
                 <div class="feed-meta">
-                  <span class="feed-category">{post.data.category}</span>
+                  <span class="feed-category">{categoryLabel(post.data.category)}</span>
                 </div>
               )}
             </div>

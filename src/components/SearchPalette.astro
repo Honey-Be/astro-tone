@@ -1,21 +1,21 @@
 ---
-import { getCollection } from 'astro:content';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
+import { getVisibleArticles, articleHref } from '../utils/articles';
+import { getCategory } from '../utils/categories';
 
 const tr = getUiText();
-const now = Date.now();
 
-const posts = (await getCollection('posts'))
-  .filter((post) => !post.data.draft && post.data.pubDate.valueOf() <= now)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getVisibleArticles();
 
 const items = posts.map((post) => ({
   title: post.data.title,
   description: post.data.description,
-  category: post.data.category ?? tr.search.defaultCategory,
-  href: withBase(`/posts/${post.id}/`),
+  category: post.data.category
+    ? (getCategory(post.data.category)?.label ?? post.data.category)
+    : tr.search.defaultCategory,
+  href: withBase(articleHref(post)),
 }));
 ---
 

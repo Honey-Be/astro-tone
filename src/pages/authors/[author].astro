@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import '../../styles/pages/posts-index.css';
+import PostFeed from '../../components/PostFeed.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisibleArticles } from '../../utils/articles';
+import { withBase } from '../../utils/paths';
+
+export async function getStaticPaths() {
+  const [authors, all] = await Promise.all([getCollection('authors'), getVisibleArticles()]);
+
+  return authors.map((author) => ({
+    params: { author: author.id },
+    props: {
+      author,
+      posts: all.filter((article) => article.data.authors.includes(author.id)),
+    },
+  }));
+}
+
+const { author, posts } = Astro.props;
+const { Content } = await render(author);
+const tr = getUiText();
+---
+
+<BaseLayout
+  title={author.data.name}
+  description={author.data.bio ?? author.data.role ?? author.data.name}
+>
+  <main id="main-content" class="posts-main">
+    <header class="author-head">
+      {
+        author.data.avatar && (
+          <Image
+            class="author-avatar"
+            src={author.data.avatar}
+            alt={author.data.name}
+            width={96}
+            height={96}
+            quality={88}
+          />
+        )
+      }
+      <p class="posts-label eyebrow-accent">{tr.terms.author}</p>
+      <h1 class="posts-title">{author.data.name}</h1>
+      {author.data.role && <p class="author-role">{author.data.role}</p>}
+      {author.data.bio && <p class="author-bio">{author.data.bio}</p>}
+      {
+        author.data.links.length > 0 && (
+          <nav class="author-links" aria-label={author.data.name}>
+            {author.data.links.map((link) => (
+              <a href={link.href.startsWith('http') ? link.href : withBase(link.href)}>
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        )
+      }
+      <div class="prose author-prose">
+        <Content />
+      </div>
+    </header>
+
+    <PostFeed posts={posts} showFilters={false} showMore={false} />
+  </main>
+
+  <style>
+    .author-head {
+      max-width: var(--max-width-content);
+      margin-bottom: var(--space-10);
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--separator);
+    }
+
+    .author-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: var(--radius-full);
+      object-fit: cover;
+      margin-bottom: var(--space-4);
+    }
+
+    .author-role {
+      margin: var(--space-2) 0 0;
+      color: var(--label-secondary);
+      font-size: var(--text-callout);
+    }
+
+    .author-bio {
+      margin: var(--space-4) 0 0;
+      max-width: 52ch;
+      color: var(--label-secondary);
+      font-size: var(--text-callout);
+      line-height: var(--leading-relaxed);
+    }
+
+    .author-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+      font-size: var(--text-footnote);
+    }
+
+    .author-prose {
+      margin-top: var(--space-6);
+    }
+  </style>
+</BaseLayout>

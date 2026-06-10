@@ -127,6 +127,72 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Article kicker: type badge + project ── */
+.post-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.post-type {
+  --type-color: var(--color-blue);
+
+  display: inline-flex;
+  align-items: center;
+  height: 1.5rem;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--type-color) 14%, transparent);
+  color: var(--type-color);
+  font-size: var(--text-caption-1);
+  font-weight: var(--weight-accent-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.post-type--COD {
+  --type-color: var(--color-success);
+}
+
+.post-type--notice {
+  --type-color: var(--color-warning);
+}
+
+.post-type--research {
+  --type-color: color-mix(in srgb, var(--label-primary) 64%, var(--color-blue));
+}
+
+.post-project {
+  font-size: var(--text-footnote);
+  font-weight: var(--weight-medium);
+  color: var(--label-secondary);
+  text-decoration: none;
+}
+
+.post-project::before {
+  content: '↳ ';
+  color: var(--label-quaternary);
+}
+
+.post-project:hover,
+.post-project:focus-visible {
+  color: var(--color-blue);
+  opacity: 1;
+}
+
+.meta-authors a {
+  color: var(--label-secondary);
+  text-decoration: none;
+}
+
+.meta-authors a:hover,
+.meta-authors a:focus-visible {
+  color: var(--color-blue);
+  opacity: 1;
+}
+
 /* ── Divider ────────────────────────────── */
 .post-divider {
   height: 1px;

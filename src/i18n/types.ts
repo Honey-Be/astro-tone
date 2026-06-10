@@ -54,14 +54,25 @@ export type UiText = {
     defaultCategory: string;
   };
 
-  // Taxonomy (category / tag archive pages)
+  // Taxonomy (category / tag / project / author archive pages)
   terms: {
     category: string;
     tag: string;
+    project: string;
+    author: string;
+    breadcrumb: string;
     categoryTitle: (name: string) => string;
     categoryDescription: (name: string) => string;
     tagTitle: (name: string) => string;
     tagDescription: (name: string) => string;
+  };
+
+  // Article type badges (news / COD / notice / research)
+  articleType: {
+    news: string;
+    COD: string;
+    notice: string;
+    research: string;
   };
 
   // Comments

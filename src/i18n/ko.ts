@@ -48,10 +48,20 @@ export const ko: UiText = {
   terms: {
     category: '분류',
     tag: '태그',
+    project: '프로젝트',
+    author: '저자',
+    breadcrumb: '탐색 경로',
     categoryTitle: (name) => name,
     categoryDescription: (name) => `${name} 분류의 글`,
     tagTitle: (name) => `#${name}`,
     tagDescription: (name) => `${name} 태그가 달린 글`,
+  },
+
+  articleType: {
+    news: '뉴스',
+    COD: '주문형',
+    notice: '공지',
+    research: '연구',
   },
 
   comments: '댓글',

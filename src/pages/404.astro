@@ -4,10 +4,10 @@ import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
-import { getVisiblePosts } from '../utils/posts';
+import { getVisibleArticles, articleHref } from '../utils/articles';
 
 const tr = getUiText();
-const recent = (await getVisiblePosts()).slice(0, 3);
+const recent = (await getVisibleArticles()).slice(0, 3);
 ---
 
 <BaseLayout
@@ -39,7 +39,7 @@ const recent = (await getVisiblePosts()).slice(0, 3);
             <ul class="not-found-recent-list">
               {recent.map((post) => (
                 <li>
-                  <a href={withBase(`/posts/${post.id}/`)} class="not-found-recent-item">
+                  <a href={withBase(articleHref(post))} class="not-found-recent-item">
                     <span class="not-found-recent-title">{post.data.title}</span>
                     <FormattedDate class="not-found-recent-date" date={post.data.pubDate} />
                   </a>

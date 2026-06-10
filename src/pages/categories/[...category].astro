@@ -1,0 +1,61 @@
+---
+import '../../styles/pages/posts-index.css';
+import PostFeed from '../../components/PostFeed.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisibleArticles } from '../../utils/articles';
+import {
+  allCategories,
+  ancestorsOf,
+  categoryHref,
+  categoryPath,
+  isInSubtree,
+} from '../../utils/categories';
+import { withBase } from '../../utils/paths';
+
+export async function getStaticPaths() {
+  const all = await getVisibleArticles();
+
+  return allCategories().map((node) => ({
+    params: { category: categoryPath(node.id).join('/') },
+    props: {
+      node,
+      ancestors: ancestorsOf(node.id),
+      posts: all.filter((article) => isInSubtree(article.data.category, node.id)),
+    },
+  }));
+}
+
+const { node, ancestors, posts } = Astro.props;
+const tr = getUiText();
+const trail = ancestors.slice(0, -1); // everything above the current node
+---
+
+<BaseLayout
+  title={tr.terms.categoryTitle(node.label)}
+  description={tr.terms.categoryDescription(node.label)}
+>
+  <main id="main-content" class="posts-main">
+    <div class="posts-header">
+      <div>
+        <nav class="term-breadcrumb" aria-label={tr.terms.breadcrumb}>
+          <a href={withBase('/articles')}>{tr.postsTitle}</a>
+          {
+            trail.map((ancestor) => (
+              <>
+                <span class="term-breadcrumb-sep" aria-hidden="true">
+                  /
+                </span>
+                <a href={withBase(categoryHref(ancestor.id))}>{ancestor.label}</a>
+              </>
+            ))
+          }
+        </nav>
+        <p class="posts-label eyebrow-accent">{tr.terms.category}</p>
+        <h1 class="posts-title">{node.label}</h1>
+      </div>
+    </div>
+
+    <PostFeed posts={posts} showFilters={false} showMore={false} />
+  </main>
+</BaseLayout>

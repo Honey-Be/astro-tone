@@ -2,18 +2,17 @@
 import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
+import { articleHref } from '../utils/articles';
 import { withBase } from '../utils/paths';
 
 type PostEntry = CollectionEntry<'posts'>;
 
 type Props = {
   posts: PostEntry[];
-  basePath?: string;
   variant?: 'home' | 'related';
 };
 
-const { posts, basePath = '/posts', variant = 'home' } = Astro.props;
-const postSlug = (id: string) => id;
+const { posts, variant = 'home' } = Astro.props;
 const placeholderEntries = await Promise.all(
   posts.map(
     async (post) =>
@@ -41,7 +40,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   {
     posts.map((post, index) => (
       <a
-        href={withBase(`${basePath}/${postSlug(post.id)}/`)}
+        href={withBase(articleHref(post))}
         class:list={['featured-post-card', `featured-post-card--slot-${index + 1}`]}
       >
         <div

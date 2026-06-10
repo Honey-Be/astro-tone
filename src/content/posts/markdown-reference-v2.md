@@ -2,8 +2,11 @@
 title: 'Markdown You Will Actually Use'
 description: 'A short reference for the prose elements the theme styles. Headings, links, lists, tables, code, callouts.'
 pubDate: '2026-02-01'
-category: 'Markdown'
+articleId: 4
+articleType: 'notice'
+category: 'markdown'
 tags: ['markdown', 'reference', 'prose']
+authors: ['alex-morgan']
 heroImage: '../../assets/tone-sample-glass-building.jpg'
 homeHeroOrder: 2
 homeOrder: 3

@@ -1,0 +1,45 @@
+---
+import { render } from 'astro:content';
+import readingTimeLib from 'reading-time';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getVisibleArticles, type Article } from '../../utils/articles';
+
+export async function getStaticPaths() {
+  const all = await getVisibleArticles();
+
+  return all.map((article) => ({
+    params: { id: String(article.data.articleId) },
+    props: {
+      post: article,
+      relatedPosts: all
+        .filter((p) => p.id !== article.id)
+        .sort((a, b) => {
+          const sameA = a.data.category && a.data.category === article.data.category ? 1 : 0;
+          const sameB = b.data.category && b.data.category === article.data.category ? 1 : 0;
+          if (sameA !== sameB) return sameB - sameA;
+          return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+        })
+        .slice(0, 3),
+    },
+  }));
+}
+
+interface Props {
+  post: Article;
+  relatedPosts: Article[];
+}
+
+const { post, relatedPosts } = Astro.props;
+const { Content } = await render(post);
+
+const readingTime = Math.max(1, Math.round(readingTimeLib(post.body ?? '').minutes));
+---
+
+<PostLayout
+  {...post.data}
+  readingTime={readingTime}
+  focusEffect={post.data.focusEffect}
+  relatedPosts={relatedPosts}
+>
+  <Content />
+</PostLayout>

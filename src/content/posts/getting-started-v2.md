@@ -2,8 +2,12 @@
 title: 'Set Up Astro Tone in Ten Minutes'
 description: 'Clone, edit one config file, write one real post, deploy. The shortest path through the starter.'
 pubDate: '2026-04-15'
-category: 'Getting Started'
+articleId: 1
+articleType: 'news'
+category: 'getting-started'
 tags: ['setup', 'astro', 'deploy']
+project: 'tone-fork'
+authors: ['alex-morgan']
 heroImage: '../../assets/tone-sample-ai-water.jpg'
 homeFeatured: true
 ---

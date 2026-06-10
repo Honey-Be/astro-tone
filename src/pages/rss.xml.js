@@ -1,10 +1,10 @@
 import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_LANG, SITE_TITLE } from '../consts';
 import { withBase } from '../utils/paths';
-import { getVisiblePosts } from '../utils/posts';
+import { getVisibleArticles, articleHref } from '../utils/articles';
 
 export async function GET(context) {
-  const posts = await getVisiblePosts();
+  const posts = await getVisibleArticles();
 
   return rss({
     title: SITE_TITLE,
@@ -15,7 +15,7 @@ export async function GET(context) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.pubDate,
-      link: withBase(`/posts/${post.id}/`),
+      link: withBase(articleHref(post)),
     })),
   });
 }

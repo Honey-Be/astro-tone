@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import '../../styles/pages/posts-index.css';
+import PostFeed from '../../components/PostFeed.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisibleArticles } from '../../utils/articles';
+
+export async function getStaticPaths() {
+  const [projects, all] = await Promise.all([getCollection('projects'), getVisibleArticles()]);
+
+  return projects
+    .filter((project) => !project.data.draft)
+    .map((project) => ({
+      params: { project: project.id },
+      props: {
+        project,
+        posts: all.filter((article) => article.data.project === project.id),
+      },
+    }));
+}
+
+const { project, posts } = Astro.props;
+const { Content } = await render(project);
+const tr = getUiText();
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <main id="main-content" class="posts-main">
+    <header class="project-banner" style={project.data.accent ? `--project-accent:${project.data.accent}` : undefined}>
+      {
+        project.data.banner && (
+          <Image
+            class="project-banner-img"
+            src={project.data.banner}
+            alt={project.data.title}
+            widths={[480, 800, 1200, 1600]}
+            sizes="(max-width: 920px) 100vw, 880px"
+            quality={84}
+          />
+        )
+      }
+      <div class="project-banner-body">
+        <p class="posts-label eyebrow-accent">{tr.terms.project}</p>
+        <h1 class="posts-title">{project.data.title}</h1>
+        <p class="project-banner-desc">{project.data.description}</p>
+      </div>
+    </header>
+
+    <div class="prose project-intro">
+      <Content />
+    </div>
+
+    <PostFeed posts={posts} showFilters={false} showMore={false} />
+  </main>
+
+  <style>
+    .project-banner {
+      position: relative;
+      max-width: var(--max-width-content);
+      margin-bottom: var(--space-10);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--fill-secondary), var(--fill-tertiary));
+      isolation: isolate;
+    }
+
+    .project-banner-img {
+      width: 100%;
+      height: clamp(180px, 30vw, 300px);
+      object-fit: cover;
+      display: block;
+      border-radius: 0;
+    }
+
+    .project-banner-body {
+      padding: var(--space-6);
+    }
+
+    .project-banner-desc {
+      margin: var(--space-2) 0 0;
+      max-width: 52ch;
+      font-size: var(--text-callout);
+      line-height: var(--leading-normal);
+    }
+
+    .project-banner-img + .project-banner-body {
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.62));
+      color: #fff;
+    }
+
+    .project-banner-img + .project-banner-body .posts-title,
+    .project-banner-img + .project-banner-body .project-banner-desc {
+      color: #fff;
+    }
+
+    .project-intro {
+      max-width: var(--max-width-content);
+      margin-bottom: var(--space-10);
+    }
+  </style>
+</BaseLayout>

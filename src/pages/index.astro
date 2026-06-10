@@ -7,10 +7,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { DATE_LOCALE, SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
-import { getVisiblePosts } from '../utils/posts';
+import { getVisibleArticles, articleHref } from '../utils/articles';
 const tr = getUiText();
 
-const posts = await getVisiblePosts();
+const posts = await getVisibleArticles();
 
 const featured = posts.find((post) => post.data.homeFeatured) ?? posts[0];
 const heroCandidates = posts.filter((post) => post.id !== featured?.id);
@@ -83,7 +83,7 @@ const featuredPlaceholderStyle = featuredPlaceholder
                   const heroDate = getHeroDateParts(post.data.pubDate);
 
                   return (
-                    <a href={withBase(`/posts/${post.id}/`)} class="hero-recent-item">
+                    <a href={withBase(articleHref(post))} class="hero-recent-item">
                       <span class="hero-recent-main">
                         <span class="hero-recent-title">{post.data.title}</span>
                         <span class="hero-recent-arrow" aria-hidden="true">
@@ -110,7 +110,7 @@ const featuredPlaceholderStyle = featuredPlaceholder
     {
       featured && (
         <section class="featured-section">
-          <a href={withBase(`/posts/${featured.id}/`)} class="featured-card">
+          <a href={withBase(articleHref(featured))} class="featured-card">
             <div class="featured-text">
               <p class="featured-meta">
                 <FormattedDate date={featured.data.pubDate} />
