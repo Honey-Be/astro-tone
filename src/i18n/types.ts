@@ -54,6 +54,16 @@ export type UiText = {
     defaultCategory: string;
   };
 
+  // Taxonomy (category / tag archive pages)
+  terms: {
+    category: string;
+    tag: string;
+    categoryTitle: (name: string) => string;
+    categoryDescription: (name: string) => string;
+    tagTitle: (name: string) => string;
+    tagDescription: (name: string) => string;
+  };
+
   // Comments
   comments: string;
 
@@ -65,6 +75,7 @@ export type UiText = {
     description: string;
     home: string;
     allPosts: string;
+    recent: string;
   };
 
   // Prose callout labels (rendered via CSS ::before content)

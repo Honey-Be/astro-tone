@@ -1,10 +1,13 @@
 ---
 import '../styles/pages/not-found.css';
+import FormattedDate from '../components/FormattedDate.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
+import { getVisiblePosts } from '../utils/posts';
 
 const tr = getUiText();
+const recent = (await getVisiblePosts()).slice(0, 3);
 ---
 
 <BaseLayout
@@ -22,7 +25,30 @@ const tr = getUiText();
       <div class="not-found-actions">
         <a href={withBase('/')} class="btn btn-primary">{tr.notFound.home}</a>
         <a href={withBase('/posts')} class="btn btn-secondary">{tr.notFound.allPosts}</a>
+        <a
+          href={withBase('/search')}
+          class="btn btn-secondary"
+          data-search-palette-trigger="true">{tr.search.title}</a
+        >
       </div>
+
+      {
+        recent.length > 0 && (
+          <nav class="not-found-recent" aria-label={tr.notFound.recent}>
+            <p class="not-found-recent-label">{tr.notFound.recent}</p>
+            <ul class="not-found-recent-list">
+              {recent.map((post) => (
+                <li>
+                  <a href={withBase(`/posts/${post.id}/`)} class="not-found-recent-item">
+                    <span class="not-found-recent-title">{post.data.title}</span>
+                    <FormattedDate class="not-found-recent-date" date={post.data.pubDate} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
     </div>
   </main>
 </BaseLayout>

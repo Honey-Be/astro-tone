@@ -3,6 +3,7 @@ title: 'Set Up Astro Tone in Ten Minutes'
 description: 'Clone, edit one config file, write one real post, deploy. The shortest path through the starter.'
 pubDate: '2026-04-15'
 category: 'Getting Started'
+tags: ['setup', 'astro', 'deploy']
 heroImage: '../../assets/tone-sample-ai-water.jpg'
 homeFeatured: true
 ---

@@ -3,6 +3,7 @@ title: 'Change the Look in One File'
 description: 'Color, spacing, and type for the whole theme live in one tokens file. Edit it, refresh, done.'
 pubDate: '2026-03-20'
 category: 'Design'
+tags: ['tokens', 'css', 'theming']
 heroImage: '../../assets/tone-sample-blue-architecture.jpg'
 focusEffect: 'scroll-dark'
 homeOrder: 1

@@ -45,6 +45,15 @@ export const en: UiText = {
     defaultCategory: 'Post',
   },
 
+  terms: {
+    category: 'Category',
+    tag: 'Tag',
+    categoryTitle: (name) => name,
+    categoryDescription: (name) => `Posts in ${name}`,
+    tagTitle: (name) => `#${name}`,
+    tagDescription: (name) => `Posts tagged ${name}`,
+  },
+
   comments: 'Comments',
 
   notFound: {
@@ -54,6 +63,7 @@ export const en: UiText = {
     description: 'The URL may be wrong, or the page may have been removed.',
     home: 'Home',
     allPosts: 'All posts',
+    recent: 'Recent posts',
   },
 
   callout: {

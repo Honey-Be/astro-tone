@@ -45,6 +45,15 @@ export const ko: UiText = {
     defaultCategory: '글',
   },
 
+  terms: {
+    category: '분류',
+    tag: '태그',
+    categoryTitle: (name) => name,
+    categoryDescription: (name) => `${name} 분류의 글`,
+    tagTitle: (name) => `#${name}`,
+    tagDescription: (name) => `${name} 태그가 달린 글`,
+  },
+
   comments: '댓글',
 
   notFound: {
@@ -54,6 +63,7 @@ export const ko: UiText = {
     description: '주소가 잘못되었거나 페이지가 삭제되었을 수 있습니다.',
     home: '홈',
     allPosts: '전체 글',
+    recent: '최근 글',
   },
 
   callout: {

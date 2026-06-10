@@ -1,0 +1,34 @@
+---
+import '../../styles/pages/posts-index.css';
+import PostFeed from '../../components/PostFeed.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisiblePosts } from '../../utils/posts';
+import { slugify } from '../../utils/slug';
+
+export async function getStaticPaths() {
+  const posts = await getVisiblePosts();
+  const names = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+  return names.map((name) => ({
+    params: { tag: slugify(name) },
+    props: { name, posts: posts.filter((post) => post.data.tags.includes(name)) },
+  }));
+}
+
+const { name, posts } = Astro.props;
+const tr = getUiText();
+---
+
+<BaseLayout title={tr.terms.tagTitle(name)} description={tr.terms.tagDescription(name)}>
+  <main id="main-content" class="posts-main">
+    <div class="posts-header">
+      <div>
+        <p class="posts-label eyebrow-accent">{tr.terms.tag}</p>
+        <h1 class="posts-title">#{name}</h1>
+      </div>
+    </div>
+
+    <PostFeed posts={posts} basePath="/posts" showFilters={false} showMore={false} />
+  </main>
+</BaseLayout>

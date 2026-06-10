@@ -45,3 +45,60 @@
   flex-wrap: wrap;
   margin-top: var(--space-3);
 }
+
+.not-found-recent {
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--separator);
+  width: 100%;
+  max-width: 420px;
+}
+
+.not-found-recent-label {
+  margin: 0 0 var(--space-4);
+  color: var(--label-tertiary);
+  font-size: var(--text-caption-1);
+  font-weight: var(--weight-accent-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.not-found-recent-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.not-found-recent-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  color: var(--label-primary);
+  text-decoration: none;
+}
+
+.not-found-recent-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-callout);
+  font-weight: var(--weight-medium);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.not-found-recent-item:hover .not-found-recent-title,
+.not-found-recent-item:focus-visible .not-found-recent-title {
+  color: var(--color-blue);
+}
+
+.not-found-recent-date {
+  color: var(--label-tertiary);
+  font-size: var(--text-footnote);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
