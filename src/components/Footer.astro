@@ -33,14 +33,17 @@ const footerLinks = config.footerNav.filter((item) => item.href !== '/');
 <style>
 .site-footer {
   background: transparent;
-  padding: var(--space-4) 0 var(--space-10);
+  /* Clear the home indicator on devices with a bottom inset. */
+  padding: var(--space-4) 0 max(var(--space-10), env(safe-area-inset-bottom));
   margin-top: var(--space-12);
 }
 
 .footer-inner {
   max-width: var(--max-width-wide);
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  padding-block: 0;
+  padding-inline: max(var(--space-6), env(safe-area-inset-left))
+    max(var(--space-6), env(safe-area-inset-right));
   display: flex;
   align-items: center;
   justify-content: space-between;

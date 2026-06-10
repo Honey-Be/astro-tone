@@ -13,8 +13,9 @@
   --prose-mark-bg: color-mix(in srgb, var(--color-blue) 22%, transparent);
   --prose-mark-fg: var(--label-primary);
 
-  font-size: clamp(1rem, 0.99rem + 0.04vw, 1.0156rem);
-  line-height: 1.76;
+  /* Korean body text needs a slightly larger size and looser leading than Latin. */
+  font-size: clamp(1.05rem, 1rem + 0.25vw, 1.1875rem);
+  line-height: 1.8;
   color: var(--label-primary);
 }
 
@@ -28,7 +29,8 @@
 
 .prose p,
 .prose li {
-  line-height: 1.76;
+  line-height: 1.8;
+  text-wrap: pretty;
 }
 
 .prose h1,
@@ -169,7 +171,8 @@
   color: var(--color-blue);
   text-decoration: underline;
   text-decoration-color: transparent;
-  text-underline-offset: 3px;
+  /* em-relative offset clears Korean descenders (ㄱ/ㅈ/ㅍ) better than a fixed px. */
+  text-underline-offset: 0.2em;
   transition: text-decoration-color var(--duration-fast) var(--ease-out);
 }
 

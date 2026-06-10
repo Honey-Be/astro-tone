@@ -68,8 +68,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* Visual size stays 2rem; hit area expands to the 44px WCAG 2.5.5 minimum. */
   width: 2rem;
   height: 2rem;
+  min-width: 44px;
+  min-height: 44px;
+  /* Negative margin keeps layout spacing while the padding grows the tap target. */
+  margin: -6px;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -85,8 +90,9 @@
 }
 
 .theme-toggle:focus-visible {
-  outline: 1px solid currentColor;
-  outline-offset: 0.25rem;
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .theme-icon {

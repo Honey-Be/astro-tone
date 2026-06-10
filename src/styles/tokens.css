@@ -29,7 +29,9 @@
   --font-sans:
     'Pretendard Variable', Pretendard, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
-  --font-mono: 'Tone Mono', Menlo, Consolas, ui-monospace, monospace;
+  --font-mono:
+    'Tone Mono', Menlo, Consolas, 'D2Coding', 'D2Coding ligature', 'Sandoll Gothic Neo Mono',
+    ui-monospace, monospace;
 
   /* Type Scale */
   --text-large-title: 2.125rem;
@@ -80,7 +82,7 @@
   --label-primary: rgba(0, 0, 0, 1);
   --label-secondary: rgba(24, 31, 36, 0.72);
   --label-tertiary: rgba(24, 31, 36, 0.62);
-  --label-quaternary: rgba(24, 31, 36, 0.34);
+  --label-quaternary: rgba(24, 31, 36, 0.42);
 
   /* Background Colors */
   --bg-primary: #ffffff;
@@ -104,6 +106,11 @@
 
   /* Link */
   --color-link: var(--color-blue);
+
+  /* Focus ring (keyboard navigation — WCAG 2.4.7) */
+  --focus-ring-color: var(--color-blue);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 3px;
 
   /* ------------------------------------------------------------
      3. SPACING — 4pt base grid
@@ -172,7 +179,7 @@
     --label-primary: rgba(255, 255, 255, 1);
     --label-secondary: rgba(239, 247, 250, 0.76);
     --label-tertiary: rgba(239, 247, 250, 0.56);
-    --label-quaternary: rgba(239, 247, 250, 0.38);
+    --label-quaternary: rgba(239, 247, 250, 0.48);
 
     --bg-primary: #000000;
     --bg-secondary: #101416;
@@ -210,7 +217,7 @@
   --label-primary: rgba(255, 255, 255, 1);
   --label-secondary: rgba(239, 247, 250, 0.76);
   --label-tertiary: rgba(239, 247, 250, 0.56);
-  --label-quaternary: rgba(239, 247, 250, 0.38);
+  --label-quaternary: rgba(239, 247, 250, 0.48);
   --bg-primary: #000000;
   --bg-secondary: #101416;
   --bg-tertiary: #151b1e;
@@ -244,7 +251,7 @@
   --label-primary: rgba(0, 0, 0, 1);
   --label-secondary: rgba(24, 31, 36, 0.72);
   --label-tertiary: rgba(24, 31, 36, 0.62);
-  --label-quaternary: rgba(24, 31, 36, 0.34);
+  --label-quaternary: rgba(24, 31, 36, 0.42);
   --bg-primary: #ffffff;
   --bg-secondary: #f7fbfd;
   --bg-tertiary: #ffffff;

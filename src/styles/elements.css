@@ -23,12 +23,13 @@ td {
   border-bottom: 1px solid var(--separator);
 }
 
+/* Quiet border-left treatment, consistent with .prose blockquote (no filled card). */
 blockquote {
   margin: var(--space-6) 0;
-  padding: var(--space-4) var(--space-6);
-  border-left: 3px solid var(--color-blue);
-  background-color: var(--fill-quaternary);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: var(--space-2) 0 var(--space-2) var(--space-5);
+  border-left: 2px solid var(--color-blue);
+  background: transparent;
+  border-radius: 0;
   font-size: var(--text-callout);
   color: var(--label-secondary);
 }
@@ -48,4 +49,11 @@ input,
 select {
   font-family: var(--font-sans);
   font-size: var(--text-body);
+}
+
+textarea:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
 }

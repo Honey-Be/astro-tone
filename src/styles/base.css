@@ -25,10 +25,10 @@
   transform: translateY(0);
 }
 
-/* Focus ring for keyboard navigation. */
+/* Focus ring for keyboard navigation (WCAG 2.4.7). */
 :focus-visible {
-  /* outline: 2px solid var(--color-blue); */
-  outline-offset: 3px;
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
   border-radius: var(--radius-xs);
 }
 
@@ -74,7 +74,22 @@ body {
   margin: 0;
   padding: 0;
   overflow-wrap: break-word;
+  /* Korean: never split a word mid-character at line breaks. */
+  word-break: keep-all;
+  line-break: strict;
+  /* Guard against accidental horizontal scroll (e.g. absolutely-positioned
+     heading anchors in the left margin). clip keeps position: sticky working. */
+  overflow-x: clip;
   transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+/* Latin code/identifiers must still wrap normally. */
+code,
+pre,
+kbd,
+samp,
+.font-mono {
+  word-break: normal;
 }
 
 /* ------------------------------------------------------------

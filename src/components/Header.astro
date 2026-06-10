@@ -122,7 +122,10 @@ const navItems = config.nav;
   justify-content: space-between;
   max-width: var(--max-width-wide);
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  /* Clear the landscape notch on either side. */
+  padding-block: 0;
+  padding-inline: max(var(--space-6), env(safe-area-inset-left))
+    max(var(--space-6), env(safe-area-inset-right));
   height: 100%;
 }
 

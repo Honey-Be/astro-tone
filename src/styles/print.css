@@ -1,0 +1,88 @@
+/* ------------------------------------------------------------
+   16. PRINT — clean, ink-friendly output for long-form reading
+   ------------------------------------------------------------ */
+@media print {
+  /* Force a light, high-contrast canvas regardless of the active theme. */
+  :root,
+  [data-theme='dark'],
+  [data-theme='light'] {
+    --bg-primary: #fff;
+    --bg-secondary: #fff;
+    --label-primary: #000;
+    --label-secondary: #1a1a1a;
+    --label-tertiary: #333;
+    --color-blue: #000;
+    --color-link: #000;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Chrome and interactive scaffolding have no place on paper. */
+  .site-header,
+  .site-footer,
+  .toc-rail,
+  .theme-toggle,
+  .search-palette,
+  .comments-section,
+  .related-section,
+  .back-link,
+  .skip-link,
+  .lightbox {
+    display: none !important;
+  }
+
+  main,
+  .post-main,
+  .home-main,
+  .about-main,
+  .posts-main {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .prose {
+    font-size: 11.5pt;
+    line-height: 1.6;
+    color: #000;
+  }
+
+  /* Avoid awkward breaks. */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    break-after: avoid;
+    color: #000;
+  }
+
+  .prose pre,
+  .prose blockquote,
+  .prose table,
+  .prose figure,
+  .prose img {
+    break-inside: avoid;
+  }
+
+  /* Reveal link destinations so a printed page stays useful. */
+  .prose a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: #555;
+    word-break: break-all;
+  }
+
+  /* Don't print the URL for in-page anchors. */
+  .prose a[href^='#']::after {
+    content: '';
+  }
+
+  .prose img {
+    border: 1px solid #ccc;
+    background: none;
+  }
+}

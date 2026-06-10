@@ -381,22 +381,30 @@
 
   .featured-card {
     grid-template-columns: 1fr;
+    gap: var(--space-5);
   }
 
+  /* Keep the hero image on mobile — show it above the text, contained. */
   .featured-thumb-wrap {
-    display: none;
+    order: -1;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-lg);
   }
 
   .hero-divider {
     width: var(--hero-measure);
   }
 
+  /* Keep the date on mobile — stack it under the title instead of dropping it. */
   .hero-recent-item {
     grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: var(--space-2) 0;
   }
 
   .hero-recent-date {
-    display: none;
+    font-size: var(--text-caption-1);
+    color: var(--label-tertiary);
   }
 
   .featured-title {
