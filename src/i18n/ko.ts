@@ -80,6 +80,8 @@ export const ko: UiText = {
   },
 
   comments: '댓글',
+  commentsNoscript: '댓글을 보려면 자바스크립트를 사용하세요.',
+  commentsPoweredBy: (providerLinkHtml) => `댓글은 ${providerLinkHtml}가 지원합니다.`,
 
   toc: '목차',
 

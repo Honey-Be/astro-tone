@@ -93,6 +93,9 @@ export type UiText = {
 
   // Comments
   comments: string;
+  commentsNoscript: string;
+  /** `providerLinkHtml` is a pre-built `<a>` tag (fixed href, not user input) — inserted via set:html so word order can differ per locale. */
+  commentsPoweredBy: (providerLinkHtml: string) => string;
 
   // Table of contents (SSR fallback shown below ~1220px, where the JS reading rail doesn't mount)
   toc: string;

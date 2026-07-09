@@ -80,6 +80,8 @@ export const en: UiText = {
   },
 
   comments: 'Comments',
+  commentsNoscript: 'Please enable JavaScript to view comments.',
+  commentsPoweredBy: (providerLinkHtml) => `Comments powered by ${providerLinkHtml}.`,
 
   toc: 'Contents',
 

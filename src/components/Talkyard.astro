@@ -1,0 +1,43 @@
+---
+/**
+ * Ported from the newsniper.org production site
+ * (github.com/newsniper-org/website, astro/src/components/Talkyard.astro).
+ * `serverUrl`/`discussionId` are parameterized here (the original hardcodes
+ * newsniper.org's own server) so the theme stays reusable; the embed itself
+ * — `talkyardServerUrl` global + the CDN script + the container div contract
+ * — is otherwise unchanged from the working original.
+ */
+import { getUiText } from '../ui';
+
+interface Props {
+  serverUrl: string;
+  discussionId: string;
+}
+
+const { serverUrl, discussionId } = Astro.props;
+const tr = getUiText();
+// Fixed href, not user input — safe to inject via set:html (needed so
+// commentsPoweredBy can place it correctly regardless of locale word order).
+const talkyardLink = '<a href="https://www.talkyard.io">Talkyard</a>';
+---
+
+<script is:inline define:vars={{ serverUrl }}>
+  window.talkyardServerUrl = serverUrl;
+</script>
+<script is:inline async defer src="https://c1.ty-cdn.net/-/talkyard-comments.min.js"></script>
+<div class="talkyard-comments" data-discussion-id={discussionId}>
+  <noscript>{tr.commentsNoscript}</noscript>
+  <p class="talkyard-attribution" set:html={tr.commentsPoweredBy(talkyardLink)} />
+</div>
+
+<style>
+  .talkyard-attribution {
+    margin-top: var(--space-4);
+    color: var(--label-tertiary);
+    font-size: var(--text-footnote);
+  }
+
+  .talkyard-attribution a {
+    color: var(--color-blue);
+  }
+</style>

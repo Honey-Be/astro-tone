@@ -19,7 +19,9 @@ const plausibleScriptUrl = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_URL || 'https
 const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
 const umamiScriptUrl = import.meta.env.PUBLIC_UMAMI_SCRIPT_URL || 'https://cloud.umami.is/script.js';
 const commentsMode = import.meta.env.PUBLIC_GISCUS_MODE || config.comments.mode;
-const commentsEnabled = commentsMode === 'giscus' || commentsMode === 'giscus-custom';
+const giscusCommentsEnabled = commentsMode === 'giscus' || commentsMode === 'giscus-custom';
+const talkyardServerUrl = import.meta.env.PUBLIC_TALKYARD_SERVER_URL || config.comments.talkyard.serverUrl;
+const talkyardCommentsEnabled = commentsMode === 'talkyard' && Boolean(talkyardServerUrl);
 
 interface Props {
   title: string;
@@ -131,10 +133,18 @@ const websiteJsonLd =
 <link rel="sitemap" href={sitemapHref} />
 <link rel="preload" href={pretendardFontUrl} as="font" type="font/woff2" crossorigin />
 {
-  commentsEnabled && (
+  giscusCommentsEnabled && (
     <>
       <link rel="preconnect" href="https://giscus.app" crossorigin />
       <link rel="preconnect" href="https://github.com" crossorigin />
+    </>
+  )
+}
+{
+  talkyardCommentsEnabled && (
+    <>
+      <link rel="preconnect" href="https://c1.ty-cdn.net" crossorigin />
+      <link rel="preconnect" href={talkyardServerUrl} crossorigin />
     </>
   )
 }

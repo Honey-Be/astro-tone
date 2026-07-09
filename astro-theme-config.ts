@@ -70,13 +70,13 @@ const config = {
   },
 
   comments: {
-    // One-line switch after you fill the giscus values:
+    // One-line switch — `mode` is the only thing that picks the provider:
     // mode: 'off'           -> no comments
     // mode: 'giscus'        -> original giscus theme
     // mode: 'giscus-custom' -> Tone custom giscus theme
-    // Local preview can also use PUBLIC_GISCUS_MODE and PUBLIC_GISCUS_* in .env.local.
+    // mode: 'talkyard'      -> Talkyard (self-hosted or Talkyard Cloud)
+    // Local preview can also use PUBLIC_GISCUS_MODE / PUBLIC_GISCUS_* / PUBLIC_TALKYARD_SERVER_URL in .env.local.
     mode: 'off',
-    provider: 'giscus',
     giscus: {
       repo: '',
       repoId: '',
@@ -92,6 +92,10 @@ const config = {
       customDarkTheme: '/giscus-dark.css',
       lang: 'en',
       loading: 'eager',
+    },
+    talkyard: {
+      /** e.g. 'https://your-instance.talkyard.net', or a self-hosted server's URL. */
+      serverUrl: '',
     },
   },
 

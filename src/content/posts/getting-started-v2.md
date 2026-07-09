@@ -163,13 +163,17 @@ The bundled GitHub Pages workflow sets `ASTRO_SITE_URL` and `ASTRO_SITE_BASE` au
 
 ## Enable comments (optional)
 
-Comments are off by default. To turn on giscus:
+Comments are off by default. `config.comments.mode` is the one switch that picks both whether comments show and which provider renders them — `off`, `giscus`, `giscus-custom`, or `talkyard`.
+
+To turn on giscus:
 
 1. Visit `https://giscus.app` and pick a repository with Discussions enabled.
 2. Copy the four values it generates (`repo`, `repoId`, `category`, `categoryId`) into `config.comments.giscus`.
 3. Set `config.comments.mode` to `giscus` for the original widget, or `giscus-custom` for the Tone-styled widget.
 
-The component renders nothing until all four values are present. There is no half-enabled state.
+The giscus component renders nothing until all four values are present. There is no half-enabled state.
+
+To turn on Talkyard instead, set `config.comments.talkyard.serverUrl` to your Talkyard instance and `config.comments.mode` to `talkyard`. Same all-or-nothing rule — nothing renders until the server URL is set.
 
 ## What to read next
 
