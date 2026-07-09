@@ -15,6 +15,7 @@ function mountReadingRailWhenWide() {
 }
 
 export function mountReadingRailLoader() {
+  mounted = false;
   mountReadingRailWhenWide();
 
   if (listening) return;

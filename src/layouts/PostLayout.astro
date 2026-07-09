@@ -244,8 +244,9 @@ const jsonLd = serializeScriptJson({
   <ImageLightbox />
 
   <script>
+    import { onReady } from '../scripts/mount';
     import { mountReadingRailLoader } from '../scripts/reading-rail-loader';
 
-    mountReadingRailLoader();
+    onReady(mountReadingRailLoader);
   </script>
 </BaseLayout>
