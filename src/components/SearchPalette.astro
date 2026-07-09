@@ -212,6 +212,13 @@ const items = posts.map((post) => ({
   white-space: nowrap;
 }
 
+/* Pagefind wraps matched terms in <mark> inside its excerpts. */
+.search-palette-results :global(.search-palette-item-desc mark) {
+  background: transparent;
+  color: var(--color-blue);
+  font-weight: var(--weight-semibold);
+}
+
 .search-palette-results :global(.search-palette-item-meta) {
   color: var(--color-blue);
   font-size: var(--text-caption-1);

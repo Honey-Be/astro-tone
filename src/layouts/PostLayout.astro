@@ -103,6 +103,13 @@ const jsonLd = serializeScriptJson({
 
       <header class="post-header">
         <div class="post-accent"></div>
+        {
+          categoryNode && (
+            <span class="sr-only" data-pagefind-meta="category">
+              {categoryNode.label}
+            </span>
+          )
+        }
         <div class="post-kicker">
           <span class:list={['post-type', `post-type--${articleType}`]}>
             {tr.articleType[articleType]}
