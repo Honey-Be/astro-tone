@@ -162,33 +162,35 @@ Click an image in a rendered post to open the lightbox. Text in `_italics_` imme
 
 ## Callouts
 
-Plain HTML with classes. The theme styles three tones:
+Write `:::note`, `:::tip`, or `:::warning` — a container directive, not HTML. It works in plain Markdown, not just MDX:
 
-```html
-<div class="callout callout-note">
-  <p>Use for extra context.</p>
-</div>
+```markdown
+:::note
+Use for extra context.
+:::
 
-<div class="callout callout-tip">
-  <p>Use for a small recommendation.</p>
-</div>
+:::tip
+Use for a small recommendation.
+:::
 
-<div class="callout callout-warning">
-  <p>Use for limits or likely mistakes.</p>
-</div>
+:::warning
+Use for limits or likely mistakes.
+:::
 ```
 
-<div class="callout callout-note">
-  <p>Use for extra context.</p>
-</div>
+:::note
+Use for extra context.
+:::
 
-<div class="callout callout-tip">
-  <p>Use for a small recommendation.</p>
-</div>
+:::tip
+Use for a small recommendation.
+:::
 
-<div class="callout callout-warning">
-  <p>Use for limits or likely mistakes.</p>
-</div>
+:::warning
+Use for limits or likely mistakes.
+:::
+
+Under the hood each directive compiles to `<div class="callout callout-note">…</div>` (swap the last class for `-tip` / `-warning`) — write that HTML directly if you ever need something the shortcode doesn't cover.
 
 ## Small HTML you can use inline
 

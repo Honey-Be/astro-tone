@@ -16,10 +16,13 @@ import { serializeScriptJson } from '../utils/serialize-script-json';
 import { slugify } from '../utils/slug';
 import { categoryHref, getCategory } from '../utils/categories';
 
+type Heading = { depth: number; slug: string; text: string };
+
 type Props = CollectionEntry<'posts'>['data'] & {
   readingTime?: number;
   relatedPosts?: CollectionEntry<'posts'>[];
   seriesNav?: SeriesNav;
+  headings?: Heading[];
 };
 
 const {
@@ -38,6 +41,7 @@ const {
   authors = [],
   series,
   seriesNav = {},
+  headings = [],
 } = Astro.props;
 
 const tr = getUiText();
@@ -162,6 +166,23 @@ const jsonLd = serializeScriptJson({
       </header>
 
       <div class="post-divider"></div>
+
+      {
+        headings.length > 0 && (
+          <nav class="inline-toc" aria-label={tr.toc} data-pagefind-ignore="all">
+            <p class="inline-toc-label">{tr.toc}</p>
+            <ol class="inline-toc-list">
+              {headings.map((heading) => (
+                <li class:list={['inline-toc-item', `inline-toc-item--depth-${heading.depth}`]}>
+                  <a class="inline-toc-link" href={`#${heading.slug}`}>
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
 
       <div class="prose" id="prose-content">
         <slot />

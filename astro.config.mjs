@@ -5,10 +5,12 @@ import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 import { defineConfig } from 'astro/config';
 import process from 'node:process';
+import remarkDirective from 'remark-directive';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
 import config from './astro-theme-config.ts';
 import { toneExpressiveCodeOptions } from './src/config/expressive-code.ts';
+import { remarkCallout } from './src/config/remark-callout.ts';
 
 // https://astro.build/config
 const sitemapExcludedPaths = new Set(['/search/']);
@@ -40,6 +42,7 @@ export default defineConfig({
   },
 
   markdown: {
+    remarkPlugins: [remarkDirective, remarkCallout],
     rehypePlugins: [
       rehypeSlug,
       [

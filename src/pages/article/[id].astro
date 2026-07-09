@@ -32,7 +32,14 @@ interface Props {
 }
 
 const { post, relatedPosts, seriesNav } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const tocHeadings = headings
+  // `footnote-label` is the sr-only heading GFM auto-generates above the footnotes
+  // section — not authored content, so it doesn't belong in the outline.
+  .filter((heading) => (heading.depth === 2 || heading.depth === 3) && heading.slug !== 'footnote-label')
+  // Astro's heading text includes the `rehypeAutolinkHeadings` "#" anchor content
+  // (astro.config.mjs appends it as a text node), so strip it back off here.
+  .map((heading) => ({ ...heading, text: heading.text.replace(/#\s*$/, '').trim() }));
 
 const readingTime = Math.max(1, Math.round(readingTimeLib(post.body ?? '').minutes));
 ---
@@ -43,6 +50,7 @@ const readingTime = Math.max(1, Math.round(readingTimeLib(post.body ?? '').minut
   focusEffect={post.data.focusEffect}
   relatedPosts={relatedPosts}
   seriesNav={seriesNav}
+  headings={tocHeadings}
 >
   <Content />
 </PostLayout>

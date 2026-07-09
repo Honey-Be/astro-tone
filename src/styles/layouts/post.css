@@ -200,6 +200,58 @@
   margin: var(--space-6) 0 var(--space-10);
 }
 
+/* ── Inline table of contents ───────────── */
+/* SSR fallback for viewports below the reading-rail breakpoint (1220px, see
+   scripts/reading-rail-loader.ts) — the rail never mounts there, JS or not. */
+.inline-toc {
+  max-width: var(--max-width-content);
+  margin: var(--space-8) 0;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-lg);
+}
+
+.inline-toc-label {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-caption-1);
+  font-weight: var(--weight-accent-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--label-tertiary);
+}
+
+.inline-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inline-toc-link {
+  display: block;
+  padding: var(--space-1) 0;
+  color: var(--label-secondary);
+  font-size: var(--text-footnote);
+  text-decoration: none;
+}
+
+.inline-toc-link:hover,
+.inline-toc-link:focus-visible {
+  color: var(--color-blue);
+}
+
+.inline-toc-item--depth-3 {
+  padding-inline-start: var(--space-4);
+}
+
+@media (min-width: 1220px) {
+  .inline-toc {
+    display: none;
+  }
+}
+
 /* ── Related posts ──────────────────────── */
 .related-section {
   max-width: var(--max-width-content);

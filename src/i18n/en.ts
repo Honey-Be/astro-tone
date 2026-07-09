@@ -81,6 +81,8 @@ export const en: UiText = {
 
   comments: 'Comments',
 
+  toc: 'Contents',
+
   notFound: {
     metaTitle: 'Page not found',
     metaDescription: 'The page you requested does not exist.',

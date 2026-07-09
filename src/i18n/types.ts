@@ -94,6 +94,9 @@ export type UiText = {
   // Comments
   comments: string;
 
+  // Table of contents (SSR fallback shown below ~1220px, where the JS reading rail doesn't mount)
+  toc: string;
+
   // 404
   notFound: {
     metaTitle: string;
