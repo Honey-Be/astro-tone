@@ -9,7 +9,7 @@ const footerTitle = config.site.logoLabel || config.site.title;
 const footerLinks = config.footerNav.filter((item) => item.href !== '/');
 ---
 
-<footer class="site-footer">
+<footer class="site-footer" transition:persist>
   <div class="footer-inner">
     <p class="footer-copy">
       &copy; {today.getFullYear()}
