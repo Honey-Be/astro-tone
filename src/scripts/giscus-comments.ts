@@ -308,11 +308,15 @@ const scheduleGiscusThemeSync = (container: HTMLElement): void => {
   });
 };
 
-const mountThemeSyncEvents = (container: HTMLElement): void => {
+const mountThemeSyncEvents = (): void => {
   if (themeSyncEventsMounted) return;
   themeSyncEventsMounted = true;
-  window.addEventListener('scroll', () => requestGiscusThemeSync(container), { passive: true });
-  window.addEventListener('resize', () => requestGiscusThemeSync(container), { passive: true });
+  const syncCurrentContainer = () => {
+    const container = document.getElementById('giscus-container');
+    if (container) requestGiscusThemeSync(container);
+  };
+  window.addEventListener('scroll', syncCurrentContainer, { passive: true });
+  window.addEventListener('resize', syncCurrentContainer, { passive: true });
 };
 
 const startGiscusThemeWatchdog = (container: HTMLElement): void => {
@@ -339,7 +343,7 @@ export const mountGiscusComments = (): void => {
     container.dataset.giscusReady = 'true';
 
     mountResizeMessageListener();
-    mountThemeSyncEvents(container);
+    mountThemeSyncEvents();
 
     const load = () => {
       if (container.dataset.giscusLoaded === 'true') return;
