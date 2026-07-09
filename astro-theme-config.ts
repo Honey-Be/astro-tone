@@ -39,7 +39,7 @@ const config = {
   },
 
   // The logo already links to `/`. Add items here if you want visible header links.
-  // Example: [{ label: 'Posts', href: '/posts' }, { label: 'About', href: '/about' }]
+  // Example: [{ label: 'Articles', href: '/articles' }, { label: 'About', href: '/about' }]
   nav: [] as NavItem[],
 
   // Footer links stay visible by default so readers have a stable way to move around.

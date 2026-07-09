@@ -78,7 +78,7 @@ If you want header links:
 
 ```ts
 nav: [
-  { label: 'Posts', href: '/posts' },
+  { label: 'Articles', href: '/articles' },
   { label: 'About', href: '/about' },
 ],
 ```
@@ -87,7 +87,7 @@ Footer links live in `footerNav` and stay visible regardless. A quiet header wit
 
 ## Write the first post
 
-Posts live in `src/content/posts/`. The filename becomes the URL slug.
+Posts live in `src/content/posts/`. The filename does not affect the URL — every post is reachable at `/article/<articleId>`, so pick a unique `articleId` for each one.
 
 Create `src/content/posts/hello.md`:
 
@@ -96,16 +96,19 @@ Create `src/content/posts/hello.md`:
 title: 'Hello'
 description: 'A first post to test the layout.'
 pubDate: '2026-05-01'
-category: 'Notes'
+articleId: 5
+category: 'guides'
 ---
 
 This is the first paragraph. Start with a concrete note, a small decision, or one thing you want to remember.
 ```
 
-Required: `title`, `description`, `pubDate`. Everything else is optional.
+Required: `title`, `description`, `pubDate`, `articleId`. `articleId` is a site-wide unique positive integer — the build fails on duplicates, so pick the next free number (the four sample posts already use `1`–`4`). Everything else is optional.
 
 - `draft: true` keeps the post out of the build, the RSS feed, and the search index.
-- `category` powers the filter row on `/posts`. Pick from `config.content.categoryOrder` or add a new one.
+- `articleType` is one of `news` (default), `COD`, `notice`, `research` — it drives the type badge and, for `COD`, the resource descriptor.
+- `category` is a leaf id from the nestable `content.categories` tree in `astro-theme-config.ts` (e.g. `reference` → `markdown` becomes `/categories/reference/markdown`). Pick an existing id or add a new node to the tree.
+- `tags` (array) and `project` (a slug from `src/content/projects/`) are optional — they power `/tags/<tag>` and the project's banner page.
 - `heroImage` is a relative path to a file inside `src/assets/`. It feeds cards, social metadata, and structured data; place the image in the Markdown body too when the post should show it inline.
 - `homeHeroOrder: 1` pins a post into one of the two compact links at the top of the home page. Lower numbers appear first; unpinned posts fill any empty slots by publish date.
 - `homeFeatured: true` pins one post to the large feature card on the home page.
@@ -122,7 +125,7 @@ The fastest path:
 2. Delete the others from `src/content/posts/`.
 3. Add three or four of your own.
 
-The posts index, RSS, related posts, and search update on the next build.
+The articles index (`/articles`), RSS, related posts, and search update on the next build.
 
 ## Run the checks
 
