@@ -42,6 +42,7 @@ const {
   series,
   seriesNav = {},
   headings = [],
+  articleId,
 } = Astro.props;
 
 const tr = getUiText();
@@ -60,6 +61,10 @@ const categoryNode = category ? getCategory(category) : undefined;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pubDateISO = pubDate.toISOString();
 const updatedDateISO = updatedDate?.toISOString();
+// Composited title+meta card, not the hero photo — takes priority over `image`
+// (heroImage) in BaseHead's OG resolution (see components/BaseHead.astro).
+// BaseHead applies `withBase()` itself, so pass the raw path here.
+const ogImageUrl = `/og/${articleId}.png`;
 
 const jsonLd = serializeScriptJson({
   '@context': 'https://schema.org',
@@ -80,6 +85,7 @@ const jsonLd = serializeScriptJson({
   title={title}
   description={description}
   image={heroImage}
+  ogImageUrl={ogImageUrl}
   type="article"
   pubDate={pubDateISO}
   updatedDate={updatedDateISO}
