@@ -343,7 +343,7 @@
 }
 
 /* ── Responsive ──────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .hero {
     --hero-measure: calc(66% - var(--space-6));
   }
@@ -359,7 +359,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .home-main {
     padding: 0 var(--space-4) var(--space-16);
   }
@@ -412,7 +412,7 @@
   }
 }
 
-@media (max-width: 359px) {
+@media (max-width: 22.4375rem) {
   .hero {
     --hero-measure: 100%;
   }

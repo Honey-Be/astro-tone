@@ -156,7 +156,7 @@
   color: var(--label-quaternary);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .posts-main {
     padding: var(--space-12) var(--space-4) var(--space-16);
   }

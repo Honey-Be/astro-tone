@@ -44,7 +44,7 @@
   line-height: 1.62;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .expressive-code .frame pre > code {
     line-height: 1.52;
   }

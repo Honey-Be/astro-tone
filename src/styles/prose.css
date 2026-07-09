@@ -67,7 +67,7 @@
   opacity: 1;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .prose .heading-anchor {
     position: static;
     display: inline-flex;
@@ -306,7 +306,7 @@
   object-fit: cover;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .prose .img-grid {
     grid-template-columns: 1fr;
   }

@@ -55,8 +55,8 @@ const imagePlaceholderStyle = (src: string | undefined) =>
               widths={[320, 480, 700, 960, 1280, 1600]}
               sizes={
                 index > 0
-                  ? '(max-width: 339px) calc(100vw - 32px), (max-width: 600px) calc((100vw - 44px) / 2), (max-width: 900px) 32rem, 45vw'
-                  : '(max-width: 600px) calc(100vw - 32px), (max-width: 900px) 32rem, 45vw'
+                  ? '(max-width: 21.1875rem) calc(100vw - 32px), (max-width: 37.5rem) calc((100vw - 44px) / 2), (max-width: 56.25rem) 32rem, 45vw'
+                  : '(max-width: 37.5rem) calc(100vw - 32px), (max-width: 56.25rem) 32rem, 45vw'
               }
               quality={88}
             />
@@ -378,7 +378,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   transform: translateY(0);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .featured-post-grid {
     grid-template-columns: minmax(0, min(100%, 32rem));
     grid-template-rows: auto;
@@ -420,7 +420,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 45rem) {
   .featured-post-grid--related {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -431,7 +431,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .featured-post-grid {
     grid-template-columns: 1fr;
   }
@@ -512,7 +512,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (max-width: 339px) {
+@media (max-width: 21.1875rem) {
   .featured-post-grid--home {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -533,7 +533,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 68.75rem) {
   .featured-post-grid--related {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -563,7 +563,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .featured-post-grid--related {
     --featured-grid-gap: 6px;
     --featured-slot-1-title: clamp(1.14rem, 5vw, 1.36rem);
@@ -613,7 +613,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (max-width: 339px) {
+@media (max-width: 21.1875rem) {
   .featured-post-grid--related {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -634,7 +634,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (min-width: 601px) and (max-width: 900px) {
+@media (min-width: 37.5625rem) and (max-width: 56.25rem) {
   .featured-post-grid--home {
     --featured-grid-gap: var(--space-5);
     --featured-grid-height: clamp(31rem, 72vw, 34rem);
@@ -668,7 +668,7 @@ const imagePlaceholderStyle = (src: string | undefined) =>
   }
 }
 
-@media (min-width: 721px) and (max-width: 1100px) {
+@media (min-width: 45.0625rem) and (max-width: 68.75rem) {
   .featured-post-grid--related {
     grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
     grid-template-rows:

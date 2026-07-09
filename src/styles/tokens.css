@@ -191,6 +191,29 @@
   --nav-height: 52px;
 }
 
+/* ------------------------------------------------------------
+   8. BREAKPOINTS (reference — not usable as var() inside @media;
+   plain CSS has no custom-media support here, so every width media query
+   in this theme spells these out literally). rem, not px: a media query's
+   rem unit resolves against the browser's default font size, so these
+   scale for readers who've raised it, unlike a fixed px threshold.
+
+     21.1875rem (339px)  — FeaturedPostGrid tightest card breakpoint
+     21.25rem   (340px)  — Footer single-column
+     22.4375rem (359px)  — home hero compact
+     28rem      (448px)  — about.css fine adjustment
+     37.5rem    (600px)  — site-wide mobile
+     37.5625rem (601px)  — FeaturedPostGrid range start (pairs with 56.25rem)
+     45rem      (720px)  — FeaturedPostGrid mid card breakpoint
+     45.0625rem (721px)  — FeaturedPostGrid range start (pairs with 68.75rem)
+     48rem      (768px)  — about.css hero collapse
+     55rem      (880px)  — Header/Footer wide-nav margin (matches --max-width-wide)
+     56.25rem   (900px)  — site-wide tablet
+     68.75rem   (1100px) — FeaturedPostGrid widest card breakpoint
+     76.25rem   (1220px) — reading-rail threshold (keep in sync with
+                            scripts/reading-rail-loader.ts's railQuery)
+   ------------------------------------------------------------ */
+
 /* Pin an explicit color-scheme when the theme toggle (or its early-init
    script in BaseHead.astro) has set [data-theme]. Every light-dark() token
    in :root above then resolves against that pin instead of the OS

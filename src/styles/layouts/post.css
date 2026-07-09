@@ -246,7 +246,7 @@
   padding-inline-start: var(--space-4);
 }
 
-@media (min-width: 1220px) {
+@media (min-width: 76.25rem) {
   .inline-toc {
     display: none;
   }
@@ -345,7 +345,7 @@
   font-weight: var(--weight-semibold);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .series-nav-links {
     grid-template-columns: 1fr;
   }
@@ -396,14 +396,14 @@
 }
 
 /* ── Tablet ─────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 56.25rem) {
   .post-title {
     font-size: 2.25rem;
   }
 }
 
 /* ── Mobile ─────────────────────────────── */
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   .post-main {
     padding: var(--space-12) var(--space-4) var(--space-16);
   }
