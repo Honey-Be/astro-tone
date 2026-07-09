@@ -1,5 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro';
+import { ClientRouter } from 'astro:transitions';
 import config from '../../astro-theme-config';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -63,6 +64,7 @@ const htmlLang = lang ?? config.site.lang;
       locale={locale}
     />
     <slot name="head" />
+    <ClientRouter />
   </head>
   <body class={bodyClass} style={calloutLabelStyle}>
     <Header />
