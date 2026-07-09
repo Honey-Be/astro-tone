@@ -265,6 +265,15 @@ export function mountSearchPalette(root: ParentNode = document) {
     if (event.target === dialog) close();
   });
 
+  // The dialog carries `transition:persist`, so its open/modal state would
+  // otherwise survive a client-side navigation started by clicking one of its
+  // own result links (View Transitions swaps the rest of the page but never
+  // touches <dialog> state on its own) — close it as soon as a transition
+  // starts, before the swap, so it never lands open on the destination page.
+  document.addEventListener('astro:before-preparation', () => {
+    close();
+  });
+
   paletteApi = { open, close };
 }
 
