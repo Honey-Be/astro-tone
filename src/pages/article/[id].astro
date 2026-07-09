@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import readingTimeLib from 'reading-time';
 import PostLayout from '../../layouts/PostLayout.astro';
-import { getVisibleArticles, type Article } from '../../utils/articles';
+import { getVisibleArticles, seriesNavFor, type Article, type SeriesNav } from '../../utils/articles';
 
 export async function getStaticPaths() {
   const all = await getVisibleArticles();
@@ -20,6 +20,7 @@ export async function getStaticPaths() {
           return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
         })
         .slice(0, 3),
+      seriesNav: seriesNavFor(article, all),
     },
   }));
 }
@@ -27,9 +28,10 @@ export async function getStaticPaths() {
 interface Props {
   post: Article;
   relatedPosts: Article[];
+  seriesNav: SeriesNav;
 }
 
-const { post, relatedPosts } = Astro.props;
+const { post, relatedPosts, seriesNav } = Astro.props;
 const { Content } = await render(post);
 
 const readingTime = Math.max(1, Math.round(readingTimeLib(post.body ?? '').minutes));
@@ -40,6 +42,7 @@ const readingTime = Math.max(1, Math.round(readingTimeLib(post.body ?? '').minut
   readingTime={readingTime}
   focusEffect={post.data.focusEffect}
   relatedPosts={relatedPosts}
+  seriesNav={seriesNav}
 >
   <Content />
 </PostLayout>

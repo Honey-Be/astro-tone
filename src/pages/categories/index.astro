@@ -1,0 +1,40 @@
+---
+import '../../styles/pages/posts-index.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisibleArticles } from '../../utils/articles';
+import { categoryHref, categoryTree, isInSubtree } from '../../utils/categories';
+import { withBase } from '../../utils/paths';
+
+const tree = categoryTree();
+const articles = await getVisibleArticles();
+const tr = getUiText();
+---
+
+<BaseLayout title={tr.terms.categoriesIndexTitle} description={tr.terms.categoriesIndexDescription}>
+  <main id="main-content" class="posts-main">
+    <div class="posts-header">
+      <div>
+        <p class="posts-label eyebrow-accent">{tr.terms.category}</p>
+        <h1 class="posts-title">{tr.terms.categoriesIndexTitle}</h1>
+      </div>
+    </div>
+
+    <ul class="term-index-list">
+      {
+        tree.map(({ node, depth }) => (
+          <li class="term-index-item" style={`--depth:${depth}`}>
+            <a class="term-index-link" href={withBase(categoryHref(node.id))}>
+              <span class="term-index-label">{node.label}</span>
+              <span class="term-index-count">
+                {tr.terms.articleCount(
+                  articles.filter((article) => isInSubtree(article.data.category, node.id)).length,
+                )}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</BaseLayout>

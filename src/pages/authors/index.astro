@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import '../../styles/pages/posts-index.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisibleArticles } from '../../utils/articles';
+import { withBase } from '../../utils/paths';
+
+const [allAuthors, articles] = await Promise.all([getCollection('authors'), getVisibleArticles()]);
+const authors = [...allAuthors].sort((a, b) => a.data.name.localeCompare(b.data.name));
+const tr = getUiText();
+---
+
+<BaseLayout title={tr.terms.authorsIndexTitle} description={tr.terms.authorsIndexDescription}>
+  <main id="main-content" class="posts-main">
+    <div class="posts-header">
+      <div>
+        <p class="posts-label eyebrow-accent">{tr.terms.author}</p>
+        <h1 class="posts-title">{tr.terms.authorsIndexTitle}</h1>
+      </div>
+    </div>
+
+    <div class="term-index-list term-index-list--cards">
+      {
+        authors.map((author) => {
+          const count = articles.filter((article) => article.data.authors.includes(author.id)).length;
+          return (
+            <a class="term-index-card" href={withBase(`/authors/${author.id}/`)}>
+              {author.data.avatar && (
+                <Image
+                  class="term-index-card-avatar"
+                  src={author.data.avatar}
+                  alt={author.data.name}
+                  width={56}
+                  height={56}
+                  quality={88}
+                />
+              )}
+              <div class="term-index-card-body">
+                <h2 class="term-index-card-title">{author.data.name}</h2>
+                {author.data.role && <p class="term-index-card-desc">{author.data.role}</p>}
+                <span class="term-index-card-count">{tr.terms.articleCount(count)}</span>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </main>
+</BaseLayout>

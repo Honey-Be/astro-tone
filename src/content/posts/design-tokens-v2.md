@@ -7,6 +7,8 @@ articleType: 'research'
 category: 'design'
 tags: ['tokens', 'css', 'theming']
 project: 'tone-fork'
+series: 'Getting Started with Tone'
+seriesOrder: 3
 authors: ['alex-morgan']
 heroImage: '../../assets/tone-sample-blue-architecture.jpg'
 focusEffect: 'scroll-dark'

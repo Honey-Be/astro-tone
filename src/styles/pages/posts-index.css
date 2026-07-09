@@ -27,6 +27,110 @@
   line-height: 1.04;
 }
 
+/* Term index pages — /categories, /tags, /projects, /authors */
+
+.term-index-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-width: var(--max-width-content);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.term-index-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  padding-inline-start: calc(var(--space-4) + var(--depth, 0) * var(--space-6));
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--label-primary);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.term-index-link:hover,
+.term-index-link:focus-visible {
+  background: var(--fill-secondary);
+}
+
+.term-index-label {
+  font-size: var(--text-callout);
+  font-weight: 550;
+}
+
+.term-index-count {
+  font-size: var(--text-footnote);
+  color: var(--label-tertiary);
+  white-space: nowrap;
+}
+
+.term-index-list--cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+.term-index-card {
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: var(--fill-secondary);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.term-index-card:hover,
+.term-index-card:focus-visible {
+  transform: translateY(-2px);
+}
+
+.term-index-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.term-index-card-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  margin: var(--space-4) var(--space-4) 0;
+}
+
+.term-index-card-body {
+  padding: var(--space-4);
+}
+
+.term-index-card-title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-callout);
+  font-weight: var(--weight-semibold);
+}
+
+.term-index-card-desc {
+  margin: 0;
+  font-size: var(--text-footnote);
+  color: var(--label-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.term-index-card-count {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-caption-1);
+  color: var(--label-tertiary);
+}
+
 .term-breadcrumb {
   display: flex;
   flex-wrap: wrap;

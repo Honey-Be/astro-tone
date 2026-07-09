@@ -7,6 +7,8 @@ articleType: 'news'
 category: 'getting-started'
 tags: ['setup', 'astro', 'deploy']
 project: 'tone-fork'
+series: 'Getting Started with Tone'
+seriesOrder: 1
 authors: ['alex-morgan']
 heroImage: '../../assets/tone-sample-ai-water.jpg'
 homeFeatured: true

@@ -65,6 +65,22 @@ export type UiText = {
     categoryDescription: (name: string) => string;
     tagTitle: (name: string) => string;
     tagDescription: (name: string) => string;
+    articleCount: (n: number) => string;
+    categoriesIndexTitle: string;
+    categoriesIndexDescription: string;
+    tagsIndexTitle: string;
+    tagsIndexDescription: string;
+    projectsIndexTitle: string;
+    projectsIndexDescription: string;
+    authorsIndexTitle: string;
+    authorsIndexDescription: string;
+  };
+
+  // Series navigation (prev/next within a series)
+  series: {
+    label: string;
+    prev: string;
+    next: string;
   };
 
   // Article type badges (news / COD / notice / research)

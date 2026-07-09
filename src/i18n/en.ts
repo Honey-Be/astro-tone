@@ -55,6 +55,21 @@ export const en: UiText = {
     categoryDescription: (name) => `Articles in ${name}`,
     tagTitle: (name) => `#${name}`,
     tagDescription: (name) => `Articles tagged ${name}`,
+    articleCount: (n) => `${n} article${n === 1 ? '' : 's'}`,
+    categoriesIndexTitle: 'All categories',
+    categoriesIndexDescription: 'Every category at a glance.',
+    tagsIndexTitle: 'All tags',
+    tagsIndexDescription: 'Every tag at a glance.',
+    projectsIndexTitle: 'All projects',
+    projectsIndexDescription: 'Every project, current and past.',
+    authorsIndexTitle: 'All authors',
+    authorsIndexDescription: 'Everyone who has written here.',
+  },
+
+  series: {
+    label: 'Series',
+    prev: '← Previous',
+    next: 'Next →',
   },
 
   articleType: {

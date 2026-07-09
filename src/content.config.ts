@@ -26,6 +26,10 @@ const posts = defineCollection({
       tags: z.array(z.string()).default([]),
       /** Optional project membership (project slug). Projects do not nest. */
       project: z.string().optional(),
+      /** Optional series membership — a free-text label shared by every article in the series. */
+      series: z.string().optional(),
+      /** Position within `series` (ascending). Falls back to `pubDate` order when omitted. */
+      seriesOrder: z.number().int().positive().optional(),
       /** Author ids (author profile pages are NOT counted as articles). */
       authors: z.array(z.string()).default([]),
       /** Minimal COD descriptor; full origin/CDN management lands in hidmf (meta-task 3). */

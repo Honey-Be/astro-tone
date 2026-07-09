@@ -6,6 +6,8 @@ articleId: 4
 articleType: 'notice'
 category: 'markdown'
 tags: ['markdown', 'reference', 'prose']
+series: 'Getting Started with Tone'
+seriesOrder: 2
 authors: ['alex-morgan']
 heroImage: '../../assets/tone-sample-glass-building.jpg'
 homeHeroOrder: 2

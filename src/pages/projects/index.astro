@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import '../../styles/pages/posts-index.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getUiText } from '../../ui';
+import { getVisibleArticles } from '../../utils/articles';
+import { withBase } from '../../utils/paths';
+
+const [allProjects, articles] = await Promise.all([getCollection('projects'), getVisibleArticles()]);
+const projects = allProjects
+  .filter((project) => !project.data.draft)
+  .sort((a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity) || a.data.title.localeCompare(b.data.title));
+const tr = getUiText();
+---
+
+<BaseLayout title={tr.terms.projectsIndexTitle} description={tr.terms.projectsIndexDescription}>
+  <main id="main-content" class="posts-main">
+    <div class="posts-header">
+      <div>
+        <p class="posts-label eyebrow-accent">{tr.terms.project}</p>
+        <h1 class="posts-title">{tr.terms.projectsIndexTitle}</h1>
+      </div>
+    </div>
+
+    <div class="term-index-list term-index-list--cards">
+      {
+        projects.map((project) => {
+          const count = articles.filter((article) => article.data.project === project.id).length;
+          return (
+            <a class="term-index-card" href={withBase(`/projects/${project.id}/`)}>
+              {project.data.banner && (
+                <Image
+                  class="term-index-card-img"
+                  src={project.data.banner}
+                  alt={project.data.title}
+                  widths={[320, 480, 640]}
+                  sizes="(max-width: 600px) 100vw, 320px"
+                  quality={82}
+                />
+              )}
+              <div class="term-index-card-body">
+                <h2 class="term-index-card-title">{project.data.title}</h2>
+                <p class="term-index-card-desc">{project.data.description}</p>
+                <span class="term-index-card-count">{tr.terms.articleCount(count)}</span>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </main>
+</BaseLayout>

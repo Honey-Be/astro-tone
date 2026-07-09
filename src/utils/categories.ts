@@ -62,3 +62,19 @@ export function isInSubtree(categoryId: string | undefined, rootId: string): boo
   if (!categoryId) return false;
   return descendantIds(rootId).includes(categoryId);
 }
+
+export type CategoryTreeEntry = { node: CategoryNode; depth: number };
+
+/** Depth-first tree order (each node followed by its descendants) — drives the `/categories` index. */
+export function categoryTree(): CategoryTreeEntry[] {
+  const result: CategoryTreeEntry[] = [];
+  const childrenOf = (parentId: string | undefined) => nodes.filter((node) => node.parent === parentId);
+  const walk = (parentId: string | undefined, depth: number) => {
+    for (const node of childrenOf(parentId)) {
+      result.push({ node, depth });
+      walk(node.id, depth + 1);
+    }
+  };
+  walk(undefined, 0);
+  return result;
+}

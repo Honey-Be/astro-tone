@@ -55,6 +55,21 @@ export const ko: UiText = {
     categoryDescription: (name) => `${name} 분류의 글`,
     tagTitle: (name) => `#${name}`,
     tagDescription: (name) => `${name} 태그가 달린 글`,
+    articleCount: (n) => `${n}개 글`,
+    categoriesIndexTitle: '전체 분류',
+    categoriesIndexDescription: '모든 분류를 한눈에 둘러봅니다.',
+    tagsIndexTitle: '전체 태그',
+    tagsIndexDescription: '모든 태그를 한눈에 둘러봅니다.',
+    projectsIndexTitle: '전체 프로젝트',
+    projectsIndexDescription: '진행 중이거나 마무리된 모든 프로젝트입니다.',
+    authorsIndexTitle: '전체 저자',
+    authorsIndexDescription: '글을 쓴 모든 저자입니다.',
+  },
+
+  series: {
+    label: '시리즈',
+    prev: '← 이전 글',
+    next: '다음 글 →',
   },
 
   articleType: {

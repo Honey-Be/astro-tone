@@ -10,6 +10,7 @@ import ScrollFocus from '../components/ScrollFocus.astro';
 import BaseLayout from './BaseLayout.astro';
 import { SITE_AUTHOR, SITE_LANG, SITE_TITLE } from '../consts';
 import { getUiText } from '../ui';
+import { articleHref, type SeriesNav } from '../utils/articles';
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
 import { slugify } from '../utils/slug';
@@ -18,6 +19,7 @@ import { categoryHref, getCategory } from '../utils/categories';
 type Props = CollectionEntry<'posts'>['data'] & {
   readingTime?: number;
   relatedPosts?: CollectionEntry<'posts'>[];
+  seriesNav?: SeriesNav;
 };
 
 const {
@@ -34,6 +36,8 @@ const {
   articleType = 'news',
   project,
   authors = [],
+  series,
+  seriesNav = {},
 } = Astro.props;
 
 const tr = getUiText();
@@ -162,6 +166,30 @@ const jsonLd = serializeScriptJson({
       <div class="prose" id="prose-content">
         <slot />
       </div>
+
+      {
+        series && (seriesNav.prev || seriesNav.next) && (
+          <nav class="series-nav" aria-label={tr.series.label} data-pagefind-ignore="all">
+            <p class="series-nav-label">
+              {tr.series.label} · {series}
+            </p>
+            <div class="series-nav-links">
+              {seriesNav.prev && (
+                <a class="series-nav-link series-nav-link--prev" href={withBase(articleHref(seriesNav.prev))}>
+                  <span class="series-nav-direction">{tr.series.prev}</span>
+                  <span class="series-nav-title">{seriesNav.prev.data.title}</span>
+                </a>
+              )}
+              {seriesNav.next && (
+                <a class="series-nav-link series-nav-link--next" href={withBase(articleHref(seriesNav.next))}>
+                  <span class="series-nav-direction">{tr.series.next}</span>
+                  <span class="series-nav-title">{seriesNav.next.data.title}</span>
+                </a>
+              )}
+            </div>
+          </nav>
+        )
+      }
 
       {
         relatedPosts.length > 0 && (

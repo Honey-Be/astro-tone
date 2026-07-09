@@ -35,3 +35,30 @@ export async function getVisibleArticles(): Promise<Article[]> {
 export function articleHref(article: Article): string {
   return `/article/${article.data.articleId}/`;
 }
+
+export type SeriesNav = { prev?: Article; next?: Article };
+
+function seriesSortKey(article: Article): [number, number] {
+  return [article.data.seriesOrder ?? Number.POSITIVE_INFINITY, article.data.pubDate.valueOf()];
+}
+
+/**
+ * Prev/next siblings within the same `series` (ordered by `seriesOrder`, falling back to
+ * `pubDate`). Returns `{}` when the article isn't in a series or has no neighbors.
+ */
+export function seriesNavFor(article: Article, all: Article[]): SeriesNav {
+  if (!article.data.series) return {};
+
+  const siblings = all
+    .filter((candidate) => candidate.data.series === article.data.series)
+    .sort((a, b) => {
+      const [aOrder, aDate] = seriesSortKey(a);
+      const [bOrder, bDate] = seriesSortKey(b);
+      return aOrder - bOrder || aDate - bDate;
+    });
+
+  const index = siblings.findIndex((candidate) => candidate.id === article.id);
+  if (index === -1) return {};
+
+  return { prev: siblings[index - 1], next: siblings[index + 1] };
+}
