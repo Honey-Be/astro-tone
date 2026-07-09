@@ -7,8 +7,17 @@ import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR, SITE_LOCALE } from '../const
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
 
-// Enable with PUBLIC_VERCEL_ANALYTICS=true.
-const analyticsEnabled = import.meta.env.PUBLIC_VERCEL_ANALYTICS === 'true';
+// Analytics — each provider is opt-in and independent (any combination may run at once).
+// Deployment-time concern, not theme config: ids/domains come from env vars only, never
+// committed to astro-theme-config.ts.
+//   Vercel:     PUBLIC_VERCEL_ANALYTICS=true
+//   Plausible:  PUBLIC_PLAUSIBLE_DOMAIN=example.com  (self-hosted script: PUBLIC_PLAUSIBLE_SCRIPT_URL)
+//   Umami:      PUBLIC_UMAMI_WEBSITE_ID=...           (self-hosted script: PUBLIC_UMAMI_SCRIPT_URL)
+const vercelAnalyticsEnabled = import.meta.env.PUBLIC_VERCEL_ANALYTICS === 'true';
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const plausibleScriptUrl = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_URL || 'https://plausible.io/js/script.js';
+const umamiWebsiteId = import.meta.env.PUBLIC_UMAMI_WEBSITE_ID;
+const umamiScriptUrl = import.meta.env.PUBLIC_UMAMI_SCRIPT_URL || 'https://cloud.umami.is/script.js';
 const commentsMode = import.meta.env.PUBLIC_GISCUS_MODE || config.comments.mode;
 const commentsEnabled = commentsMode === 'giscus' || commentsMode === 'giscus-custom';
 
@@ -174,5 +183,11 @@ const websiteJsonLd =
 <!-- JSON-LD (WebSite schema) -->
 {websiteJsonLd && <script is:inline type="application/ld+json" set:html={websiteJsonLd} />}
 
-<!-- Vercel Analytics (opt-in: PUBLIC_VERCEL_ANALYTICS=true) -->
-{analyticsEnabled && <script is:inline defer src="/_vercel/insights/script.js" />}
+<!-- Analytics (opt-in via env vars — see comment near the top of this file) -->
+{vercelAnalyticsEnabled && <script is:inline defer src="/_vercel/insights/script.js" />}
+{
+  plausibleDomain && (
+    <script is:inline defer data-domain={plausibleDomain} src={plausibleScriptUrl} />
+  )
+}
+{umamiWebsiteId && <script is:inline defer data-website-id={umamiWebsiteId} src={umamiScriptUrl} />}
